@@ -1,23 +1,23 @@
 # This workflow will build a Java project with Maven
+
 name: Java CI with Maven in Linux
+
 on:
   push:
   pull_request:
+
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
+      # test against several Java versions:
       matrix:
-        # test against several OSes:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        # test against several Java versions:
-        java: [ 8 ]
-        # includes JDK 11 on Linux
         include:
-        - os: ubuntu-latest
-          java: 11
+          - java: 8
+            additional-maven-args: "-Pjacoco"
+          - java: 11
 
-    name: Build with Java ${{ matrix.java }} on ${{ matrix.os }}
+    name: Build with Java ${{ matrix.java }} on Linux
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK ${{ matrix.java }}
@@ -31,4 +31,17 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2-
     - name: Build with Maven
-      run: mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml clean verify
+      run: >
+        mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
+        clean verify ${{ matrix.additional-maven-args }}
+    - name: Generate JUnit Report
+      run: >
+        mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
+        surefire-report:report-only site:site -DgenerateReports=false
+      if: ${{ always() }}
+    - name: Archive JUnit Report
+      uses: actions/upload-artifact@v2
+      if: ${{ always() }}
+      with:
+        name: surefire-report-jdk-${{ matrix.java }}
+        path: '**/target/site'
