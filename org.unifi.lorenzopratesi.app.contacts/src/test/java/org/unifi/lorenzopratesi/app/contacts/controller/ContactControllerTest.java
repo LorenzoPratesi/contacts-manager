@@ -34,10 +34,6 @@ class ContactControllerTest {
 		MockitoAnnotations.initMocks(this);
 	}
 	
-	@Test
-	void testName() throws Exception {
-		assertThat(false).isTrue();
-	}
 	
 	@Test
 	void testFindAllContacts() {

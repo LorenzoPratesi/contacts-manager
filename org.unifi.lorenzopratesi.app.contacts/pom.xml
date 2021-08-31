@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.unifi.lorenzopratesi.app</groupId>
-	<artifactId>contacts</artifactId>
+	<groupId>it.lorenzopratesi.app</groupId>
+	<artifactId>hotelsbooking</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>contacts</name>
+	<name>hotelsbooking</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -18,10 +18,8 @@
 		<junit.version>5.7.0</junit.version>
 		<mockito.version>3.3.3</mockito.version>
 		<pitest.version>1.5.2</pitest.version>
-
-		<!-- Plugins versions -->
-		<jacoco.version>0.8.6</jacoco.version>
 	</properties>
+
 
 	<dependencies>
 		<dependency>
@@ -63,34 +61,60 @@
 			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
 		<pluginManagement>
 			<plugins>
-
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.0</version>
 					<configuration>
 						<source>1.8</source>
 						<target>1.8</target>
 					</configuration>
 				</plugin>
-
 				<plugin>
-					<artifactId>maven-surefire-report-plugin</artifactId>
+					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.22.2</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.9.1</version>
 				</plugin>
+				
+
+				<plugin>
+					<groupId>org.pitest</groupId>
+					<artifactId>pitest-maven</artifactId>
+					<version>${pitest.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.pitest</groupId>
+							<artifactId>pitest-junit5-plugin</artifactId>
+							<version>0.12</version>
+						</dependency>
+					</dependencies>
+					<configuration>
+						<targetClasses>
+							<param>org.unifi.lorenzopratesi.app.hotelsbooking.controller.*</param>
+							<param>org.unifi.lorenzopratesi.app.hotelsbooking.repository.*</param>
+						</targetClasses>
+						<targetTests>
+							<param>org.unifi.lorenzopratesi.app.hotelsbooking.controller*</param>
+							<param>org.unifi.lorenzopratesi.app.hotelsbooking.repository.*</param>
+						</targetTests>
+						<mutators>
+							<mutator>DEFAULTS</mutator>
+						</mutators>
+						<mutationThreshold>100</mutationThreshold>
+					</configuration>
+				</plugin>
 
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>${jacoco.version}</version>
+					<version>0.8.6</version>
 					<configuration>
 						<excludes>
 							<exclude>**/model/*.*</exclude>
@@ -106,33 +130,22 @@
 					</executions>
 				</plugin>
 
+				
 				<plugin>
-					<groupId>org.pitest</groupId>
-					<artifactId>pitest-maven</artifactId>
-					<version>${pitest.version}</version>
+					<groupId>org.eluder.coveralls</groupId>
+					<artifactId>coveralls-maven-plugin</artifactId>
+					<version>4.3.0</version>
+
 					<dependencies>
+						<!-- This is required when using JDK 9 or higher since javax.xml.bind 
+							has been removed from the JDK -->
 						<dependency>
-							<groupId>org.pitest</groupId>
-							<artifactId>pitest-junit5-plugin</artifactId>
-							<version>0.12</version>
+							<groupId>javax.xml.bind</groupId>
+							<artifactId>jaxb-api</artifactId>
+							<version>2.3.1</version>
 						</dependency>
 					</dependencies>
-					<configuration>
-						<targetClasses>
-							<param>org.unifi.lorenzopratesi.app.contacts.controller.*</param>
-							<param>org.unifi.lorenzopratesi.app.contacts.repository.*</param>
-						</targetClasses>
-						<targetTests>
-							<param>org.unifi.lorenzopratesi.app.contacts.controller.*</param>
-							<param>org.unifi.lorenzopratesi.app.contacts.repository.*</param>
-						</targetTests>
-						<mutators>
-							<mutator>DEFAULTS</mutator>
-						</mutators>
-						<mutationThreshold>100</mutationThreshold>
-					</configuration>
 				</plugin>
-
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -148,6 +161,33 @@
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>coveralls</id>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- configured in pluginManagement -->
+						<!-- JaCoCo report is required by coveralls-maven-plugin -->
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<!-- configured in pluginManagement -->
+						<groupId>org.eluder.coveralls</groupId>
+						<artifactId>coveralls-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>verify</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
@@ -175,6 +215,6 @@
 				</plugins>
 			</build>
 		</profile>
-	</profiles>
 
+	</profiles>
 </project>
