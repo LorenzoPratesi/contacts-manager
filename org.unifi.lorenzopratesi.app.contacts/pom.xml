@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>it.lorenzopratesi.app</groupId>
-	<artifactId>hotelsbooking</artifactId>
+	<artifactId>contacts</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>hotelsbooking</name>
+	<name>contacts-manager</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -97,12 +97,12 @@
 					</dependencies>
 					<configuration>
 						<targetClasses>
-							<param>org.unifi.lorenzopratesi.app.hotelsbooking.controller.*</param>
-							<param>org.unifi.lorenzopratesi.app.hotelsbooking.repository.*</param>
+							<param>org.unifi.lorenzopratesi.app.contacts.controller.*</param>
+							<param>org.unifi.lorenzopratesi.app.contacts.repository.*</param>
 						</targetClasses>
 						<targetTests>
-							<param>org.unifi.lorenzopratesi.app.hotelsbooking.controller*</param>
-							<param>org.unifi.lorenzopratesi.app.hotelsbooking.repository.*</param>
+							<param>org.unifi.lorenzopratesi.app.contacts.controller*</param>
+							<param>org.unifi.lorenzopratesi.app.contacts.repository.*</param>
 						</targetTests>
 						<mutators>
 							<mutator>DEFAULTS</mutator>
