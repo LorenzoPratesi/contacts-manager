@@ -1,5 +1,6 @@
 package org.unifi.lorenzopratesi.app.contacts.controller;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -31,6 +32,11 @@ class ContactControllerTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
+	}
+	
+	@Test
+	void testName() throws Exception {
+		assertThat(false).isTrue();
 	}
 	
 	@Test
