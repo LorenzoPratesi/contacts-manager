@@ -35,7 +35,7 @@ jobs:
         mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
         clean verify ${{ matrix.additional-maven-args }}
       env: 
-        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
     - name: Generate JUnit Report
       run: >
         mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
