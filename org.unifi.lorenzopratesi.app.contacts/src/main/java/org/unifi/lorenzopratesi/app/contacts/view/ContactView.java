@@ -8,4 +8,8 @@ public interface ContactView {
 
 	void listContacts(List<Contact> contacts);
 
+	void contactAdded(Contact contact);
+
+	void showMessage(String message, Contact contact, String type);
+
 }

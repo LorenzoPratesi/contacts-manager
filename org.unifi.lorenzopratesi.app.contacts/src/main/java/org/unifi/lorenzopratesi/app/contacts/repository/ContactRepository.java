@@ -8,4 +8,8 @@ public interface ContactRepository {
 
 	public List<Contact> findAllContacts();
 
+	public Contact findByName(String name);
+
+	public void addContact(Contact contact);
+
 }
