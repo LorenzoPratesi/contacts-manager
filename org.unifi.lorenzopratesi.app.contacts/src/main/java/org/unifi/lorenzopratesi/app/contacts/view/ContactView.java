@@ -10,6 +10,10 @@ public interface ContactView {
 
 	void contactAdded(Contact contact);
 
-	void showMessage(String message, Contact contact, String type);
+	void contactEdited(Contact contact);
+
+	void contactRemoved(Contact contactToDelete);
+
+	void showMessage(String message);
 
 }

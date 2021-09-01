@@ -1,52 +1,86 @@
 package org.unifi.lorenzopratesi.app.contacts.model;
 
-public class Contact {
+import java.util.Objects;
 
-	private String name;
-	private String surname;
-	private String tel;
+import org.bson.BsonType;
+
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonRepresentation;
+
+
+public class Contact {
+	
+	@BsonId
+	@BsonRepresentation(BsonType.OBJECT_ID)
+	private String id;
+	private String firstName;
+	private String lastName;
+	private String phone;
+	private String email;
 
 	public Contact() {
 	}
 
-	public Contact(String name, String surname, String tel) {
-		this.name = name;
-		this.surname = surname;
-		this.tel = tel;
+	public Contact(String id, String firstName, String lastName, String phone, String email) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phone = phone;
+		this.email = email;
+	}
+	
+	public Contact(String firstName, String lastName, String phone, String email) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phone = phone;
+		this.email = email;
+	}
+	
+	public String getId() {
+		return id;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getSurname() {
-		return surname;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public String getTel() {
-		return tel;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setTel(String tel) {
-		this.tel = tel;
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Override
+	public String toString() {
+		return "Contact [firstName=" + firstName + ", lastName=" + lastName + ", phone=" + phone + ", email=" + email
+				+ "]";
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
-		result = prime * result + ((tel == null) ? 0 : tel.hashCode());
-		return result;
+		return Objects.hash(id, firstName, lastName, phone);
 	}
 
 	@Override
@@ -58,27 +92,29 @@ public class Contact {
 		if (getClass() != obj.getClass())
 			return false;
 		Contact other = (Contact) obj;
-		if (name == null) {
-			if (other.name != null)
+		if (email == null) {
+			if (other.email != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!email.equals(other.email))
 			return false;
-		if (surname == null) {
-			if (other.surname != null)
+		if (firstName == null) {
+			if (other.firstName != null)
 				return false;
-		} else if (!surname.equals(other.surname))
+		} else if (!firstName.equals(other.firstName))
 			return false;
-		if (tel == null) {
-			if (other.tel != null)
+		if (lastName == null) {
+			if (other.lastName != null)
 				return false;
-		} else if (!tel.equals(other.tel))
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Contact [name=" + name + ", surname=" + surname + ", tel=" + tel + "]";
-	}
+	
+	
 
 }
