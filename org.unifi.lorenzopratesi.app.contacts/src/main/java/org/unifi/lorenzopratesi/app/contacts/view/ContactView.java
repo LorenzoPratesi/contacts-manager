@@ -15,5 +15,4 @@ public interface ContactView {
 	void contactRemoved(Contact contactToDelete);
 
 	void showMessage(String message);
-
 }

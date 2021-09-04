@@ -3,7 +3,6 @@ package org.unifi.lorenzopratesi.app.contacts.model;
 import java.util.Objects;
 
 import org.bson.BsonType;
-
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
 
@@ -13,6 +12,7 @@ public class Contact {
 	@BsonId
 	@BsonRepresentation(BsonType.OBJECT_ID)
 	private String id;
+	
 	private String firstName;
 	private String lastName;
 	private String phone;
@@ -38,6 +38,10 @@ public class Contact {
 	
 	public String getId() {
 		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {

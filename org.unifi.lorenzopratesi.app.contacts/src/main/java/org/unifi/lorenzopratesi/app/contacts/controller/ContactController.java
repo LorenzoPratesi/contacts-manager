@@ -11,20 +11,27 @@ public class ContactController {
 	private ContactRepository contactRepository;
 	private InputValidation inputValidation;
 
+	public ContactController(ContactRepository contactRepository, ContactView contactView,
+			InputValidation inputValidation) {
+		this.contactRepository = contactRepository;
+		this.contactView = contactView;
+		this.inputValidation = inputValidation;
+	}
+
 	public void allContacts() {
 		contactView.listContacts(contactRepository.findAll());
 	}
 
 	public void newContact(Contact contact) {
-		if(isValidEmail(contact.getEmail()) && isValidPhone(contact.getPhone()) && !exists(contact.getId())) {
+		if (isValidEmail(contact.getEmail()) && isValidPhone(contact.getPhone()) && !exists(contact.getId())) {
 			Contact newContact = new Contact(contact.getFirstName(), contact.getLastName(), contact.getPhone(),
 					contact.getEmail());
 			contactRepository.save(newContact);
 			contactView.contactAdded(newContact);
-			contactView.showMessage("Contact added");			
+			contactView.showMessage("Contact added");
 		}
 	}
-	
+
 	public void deleteContact(Contact contact) {
 		if (contactRepository.findById(contact.getId()) == null) {
 			contactView.showMessage(String.format("There is no guest with id %s", contact.getId()));
@@ -32,7 +39,7 @@ public class ContactController {
 			contactRepository.delete(contact.getId());
 			contactView.contactRemoved(contact);
 		}
-		
+
 	}
 
 	private boolean exists(String id) {
@@ -60,7 +67,5 @@ public class ContactController {
 		}
 		return true;
 	}
-
-
 
 }

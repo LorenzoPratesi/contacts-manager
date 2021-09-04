@@ -1,11 +1,10 @@
 package org.unifi.lorenzopratesi.app.contacts.controller;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
@@ -22,13 +21,6 @@ import org.unifi.lorenzopratesi.app.contacts.view.ContactView;
 import static java.util.Arrays.asList;
 
 class ContactControllerTest {
-	private static final String testContactFirstName1 = "firstName1";
-	private static final String testContactLastName1 = "lastName1";
-	private static final String testContactName2 = "name2";
-	private static final String testContactSurnameName2 = "surname2";
-	private static final String testContactTel1 = "0000000001";
-	private static final String testContactTel2 = "0000000002";
-	private static final String testContactEmail = "test@email.com";
 
 	@Mock
 	private ContactRepository contactRepository;
@@ -41,11 +33,18 @@ class ContactControllerTest {
 
 	@InjectMocks
 	private ContactController contactController;
+	
+	private AutoCloseable closeable;
 
 	@BeforeEach
-	void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+	void setup() {
+		closeable = MockitoAnnotations.openMocks(this);
 	}
+	
+	@AfterEach
+    void releaseMocks() throws Exception {
+        closeable.close();
+    }
 
 	@Test
 	void testFindAllContacts() {
