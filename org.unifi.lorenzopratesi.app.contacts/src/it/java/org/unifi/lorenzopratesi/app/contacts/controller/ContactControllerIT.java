@@ -59,7 +59,7 @@ class ContactControllerIT {
 		contactRepository.save(contact1);
 		contactRepository.save(contact2);
 		contactController.allContacts();
-		verify(contactView).listContacts(asList(contact1, contact2));
+		verify(contactView).showContacts(asList(contact1, contact2));
 		verifyNoMoreInteractions(contactView);
 	}
 	

@@ -6,7 +6,7 @@ import org.unifi.lorenzopratesi.app.contacts.model.Contact;
 
 public interface ContactView {
 
-	void listContacts(List<Contact> contacts);
+	void showContacts(List<Contact> contacts);
 
 	void contactAdded(Contact contact);
 

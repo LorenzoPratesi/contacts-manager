@@ -51,7 +51,7 @@ class ContactControllerTest {
 		List<Contact> contacts = asList(new Contact());
 		when(contactRepository.findAll()).thenReturn(contacts);
 		contactController.allContacts();
-		verify(contactView).listContacts(contacts);
+		verify(contactView).showContacts(contacts);
 	}
 
 	@Test

@@ -19,7 +19,7 @@ public class ContactController {
 	}
 
 	public void allContacts() {
-		contactView.listContacts(contactRepository.findAll());
+		contactView.showContacts(contactRepository.findAll());
 	}
 
 	public void newContact(Contact contact) {
