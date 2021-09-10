@@ -1,7 +1,6 @@
 package org.unifi.lorenzopratesi.app.contacts.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 import javax.swing.DefaultListModel;
@@ -13,15 +12,12 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JButtonFixture;
 import org.assertj.swing.fixture.JListFixture;
 import org.assertj.swing.fixture.JTextComponentFixture;
-import org.assertj.swing.junit.runner.GUITestRunner;
-import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.unifi.lorenzopratesi.app.contacts.controller.ContactController;
@@ -123,7 +119,7 @@ class ContactSwingViewTest {
 		}
 
 		@Test
-		@DisplayName("Add Contact Button should be disabled when contact infos are blank - testWhenSomeGuestInfosAreBlankThenAddGuestButtonShouldBeDisabled()")
+		@DisplayName("Add Contact Button should be disabled when contact infos are blank - testWhenSomeContactInfosAreBlankThenAddContactButtonShouldBeDisabled()")
 		void testWhenSomeContactInfosAreBlankThenAddContactButtonShouldBeDisabled() {
 
 			JTextComponentFixture firstNameTextBox = window.textBox("firstNameTextBox");
@@ -160,11 +156,11 @@ class ContactSwingViewTest {
 
 			// Verify.
 			JListFixture contactsList = window.list("contactsList");
-			JButtonFixture deleteGuestButton = window.button("deleteContactButton");
+			JButtonFixture deleteContactButton = window.button("deleteContactButton");
 			contactsList.selectItem(0);
-			deleteGuestButton.requireEnabled();
+			deleteContactButton.requireEnabled();
 			contactsList.clearSelection();
-			deleteGuestButton.requireDisabled();
+			deleteContactButton.requireDisabled();
 		}
 
 		private void resetTextBoxFields(JTextComponentFixture... textBoxFields) {
@@ -250,8 +246,8 @@ class ContactSwingViewTest {
 	class ContactsDelegationsTests {
 
 		@Test
-		@DisplayName("Add Guest Button should delegate to guest controller newGuest() - testAddGuestButtonShouldDelegateToGuestControllerNewGuest()")
-		void testAddContactButtonShouldDelegateToContactControllerNewGuest() {
+		@DisplayName("Add Contact Button should delegate to Contact controller newContact() - testAddContactButtonShouldDelegateToContactControllerNewContact()")
+		void testAddContactButtonShouldDelegateToContactControllerNewContact() {
 			// Setup.
 			window.textBox("firstNameTextBox").enterText("test");
 			window.textBox("lastNameTextBox").enterText("test");
@@ -266,7 +262,7 @@ class ContactSwingViewTest {
 		}
 
 		@Test
-		@DisplayName("Delete Contact Button should delegate to contact controller deleteContact() - testDeleteGuestButtonShouldDelegateToGuestControllerDeleteGuest()")
+		@DisplayName("Delete Contact Button should delegate to contact controller deleteContact() - testDeleteContactButtonShouldDelegateToContactControllerDeleteContact()")
 		void testDeleteContactButtonShouldDelegateToContactControllerDeleteContact() {
 			// Setup.
 			Contact contactToDelete = new Contact("1", "testFirstName1", "testLastName1", "0000000000",
@@ -274,9 +270,9 @@ class ContactSwingViewTest {
 			Contact anotherContact = new Contact("2", "testFirstName2", "testLastName2", "1111111111",
 					"test2@email.com");
 			GuiActionRunner.execute(() -> {
-				DefaultListModel<Contact> listGuestsModel = contactSwingView.getListContactsModel();
-				listGuestsModel.addElement(contactToDelete);
-				listGuestsModel.addElement(anotherContact);
+				DefaultListModel<Contact> listContactsModel = contactSwingView.getListContactsModel();
+				listContactsModel.addElement(contactToDelete);
+				listContactsModel.addElement(anotherContact);
 			});
 			window.list("contactsList").selectItem(0);
 

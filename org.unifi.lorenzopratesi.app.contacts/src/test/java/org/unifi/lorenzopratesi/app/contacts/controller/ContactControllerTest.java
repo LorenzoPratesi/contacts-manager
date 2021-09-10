@@ -140,7 +140,7 @@ class ContactControllerTest {
 		Contact contactNotPresent = new Contact("1", "testFirstName", "testLastName", "0000000000", "test@email.com");
 		when(contactRepository.findById(contactNotPresent.getId())).thenReturn(null);
 		contactController.deleteContact(contactNotPresent);
-		verify(contactView).showMessage("There is no guest with id " + contactNotPresent.getId());
+		verify(contactView).showMessage(String.format("There is no contact with id %s, %s, %s", contactNotPresent.getId(), contactNotPresent.getFirstName(), contactNotPresent.getLastName()));
 	}
 
 }

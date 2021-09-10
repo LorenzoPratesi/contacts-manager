@@ -34,7 +34,7 @@ public class ContactController {
 
 	public void deleteContact(Contact contact) {
 		if (contactRepository.findById(contact.getId()) == null) {
-			contactView.showMessage(String.format("There is no guest with id %s", contact.getId()));
+			contactView.showMessage(String.format("There is no contact with id %s, %s, %s", contact.getId(), contact.getFirstName(), contact.getLastName()));
 		} else {
 			contactRepository.delete(contact.getId());
 			contactView.contactRemoved(contact);
