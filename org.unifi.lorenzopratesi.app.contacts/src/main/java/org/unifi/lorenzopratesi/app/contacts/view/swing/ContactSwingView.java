@@ -1,6 +1,5 @@
 package org.unifi.lorenzopratesi.app.contacts.view.swing;
 
-import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -39,22 +38,6 @@ public class ContactSwingView extends JFrame implements ContactView {
 	private JList<Contact> listContacts;
 	private DefaultListModel<Contact> listContactsModel;
 	private JButton btnDeleteSelected;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ContactSwingView frame = new ContactSwingView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.

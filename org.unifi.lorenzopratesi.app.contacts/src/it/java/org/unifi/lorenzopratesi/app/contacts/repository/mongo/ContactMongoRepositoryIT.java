@@ -1,7 +1,5 @@
 package org.unifi.lorenzopratesi.app.contacts.repository.mongo;
 
-import static org.unifi.lorenzopratesi.app.contacts.repository.mongo.ContactMongoRepository.COLLECTION_NAME;
-import static org.unifi.lorenzopratesi.app.contacts.repository.mongo.ContactMongoRepository.DATABASE_NAME;
 
 import java.util.List;
 import static java.util.stream.Collectors.toList;
@@ -31,6 +29,9 @@ import com.mongodb.client.MongoDatabase;
 
 @Testcontainers
 class ContactMongoRepositoryIT {
+	
+	private static final String DATABASE_NAME = "contact-manager";
+	private static final String COLLECTION_NAME = "contact";
 
 	@Container
 	static final MongoDBContainer mongo = new MongoDBContainer("mongo:4.4.3");
@@ -42,7 +43,7 @@ class ContactMongoRepositoryIT {
 	@BeforeEach
 	void setup() {
 		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getFirstMappedPort()));
-		contactMongoRepository = new ContactMongoRepository(client);
+		contactMongoRepository = new ContactMongoRepository(client, DATABASE_NAME, COLLECTION_NAME);
 		CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
 				fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 		MongoDatabase database = client.getDatabase(DATABASE_NAME).withCodecRegistry(pojoCodecRegistry);

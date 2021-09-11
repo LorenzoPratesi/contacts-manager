@@ -21,15 +21,13 @@ import com.mongodb.client.model.Filters;
 
 public class ContactMongoRepository implements ContactRepository {
 
-	public static final String DATABASE_NAME = "contact-manager";
-	public static final String COLLECTION_NAME = "contact";
 	private MongoCollection<Contact> contactCollection;
 
-	public ContactMongoRepository(MongoClient client) {
+	public ContactMongoRepository(MongoClient client, String databaseName, String collectionName) {
 		CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
 				fromProviders(PojoCodecProvider.builder().automatic(true).build()));
-		MongoDatabase database = client.getDatabase(DATABASE_NAME).withCodecRegistry(pojoCodecRegistry);
-		contactCollection = database.getCollection(COLLECTION_NAME, Contact.class);
+		MongoDatabase database = client.getDatabase(databaseName).withCodecRegistry(pojoCodecRegistry);
+		contactCollection = database.getCollection(collectionName, Contact.class);
 	}
 
 	@Override

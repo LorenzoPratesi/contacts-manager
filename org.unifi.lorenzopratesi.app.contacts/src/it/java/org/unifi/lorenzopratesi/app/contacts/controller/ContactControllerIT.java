@@ -23,6 +23,9 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
 class ContactControllerIT {
+	
+	private static final String DATABASE_NAME = "contact-manager";
+	private static final String COLLECTION_NAME = "contact";
 
 	@Mock
 	private ContactView contactView;
@@ -40,7 +43,7 @@ class ContactControllerIT {
 	@BeforeEach
 	public void setup() {
 		closeable = MockitoAnnotations.openMocks(this);
-		contactRepository = new ContactMongoRepository(new MongoClient(new ServerAddress("localhost", mongoPort)));
+		contactRepository = new ContactMongoRepository(new MongoClient(new ServerAddress("localhost", mongoPort)), DATABASE_NAME, COLLECTION_NAME);
 		inputValidation = new ControllerInputValidator();
 		contactRepository.findAll().forEach(c -> contactRepository.delete(c.getId()));
 		

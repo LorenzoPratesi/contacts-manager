@@ -1,7 +1,5 @@
 package org.unifi.lorenzopratesi.app.contacts.repository.mongo;
 
-import static org.unifi.lorenzopratesi.app.contacts.repository.mongo.ContactMongoRepository.COLLECTION_NAME;
-import static org.unifi.lorenzopratesi.app.contacts.repository.mongo.ContactMongoRepository.DATABASE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -29,6 +27,9 @@ import de.bwaldvogel.mongo.MongoServer;
 import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 
 class ContactMongoRepositoryTest {
+	
+	private static final String DATABASE_NAME = "contact-manager";
+	private static final String COLLECTION_NAME = "contact";
 
 	private static MongoServer server;
 	private static InetSocketAddress serverAddress;
@@ -50,7 +51,7 @@ class ContactMongoRepositoryTest {
 	@BeforeEach
 	void setup() {
 		client = new MongoClient(new ServerAddress(serverAddress));
-		contactMongoRepository = new ContactMongoRepository(client);
+		contactMongoRepository = new ContactMongoRepository(client, DATABASE_NAME, COLLECTION_NAME);
 		CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
 				fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 		MongoDatabase database = client.getDatabase(DATABASE_NAME).withCodecRegistry(pojoCodecRegistry);

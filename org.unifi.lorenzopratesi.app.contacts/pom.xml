@@ -134,6 +134,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>4.6.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -153,6 +159,7 @@
 							<configuration>
 								<sources>
 									<source>src/it/java</source>
+									<source>src/e2e/java</source>
 								</sources>
 							</configuration>
 						</execution>
@@ -250,10 +257,26 @@
 					</configuration>
 					<executions>
 						<execution>
+							<id>default-it</id>
 							<goals>
 								<goal>integration-test</goal>
 								<goal>verify</goal>
 							</goals>
+						</execution>
+						<execution>
+							<id>e2e-tests</id>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<excludes>
+									<exclude>**/*IT.java</exclude>
+								</excludes>
+								<includes>
+									<include>**/*E2E.java</include>
+								</includes>
+							</configuration>
 						</execution>
 					</executions>
 				</plugin>

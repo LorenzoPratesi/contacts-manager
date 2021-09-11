@@ -24,6 +24,8 @@ import com.mongodb.MongoClient;
 class ContactSwingIT {
 
 	private static final String MONGO_CLIENT_HOST = "localhost";
+	private static final String DATABASE_NAME = "contact-manager";
+	private static final String COLLECTION_NAME = "contact";
 
 	private ContactMongoRepository contactRepository;
 	private ControllerInputValidator inputValidation;
@@ -40,7 +42,7 @@ class ContactSwingIT {
 	void onSetUp() {
 		// Set repositories and input validation.
 		int mongoPort = Integer.parseInt(System.getProperty("mongo.port", "27017"));
-		contactRepository = new ContactMongoRepository(new MongoClient(MONGO_CLIENT_HOST, mongoPort));
+		contactRepository = new ContactMongoRepository(new MongoClient(MONGO_CLIENT_HOST, mongoPort), DATABASE_NAME, COLLECTION_NAME);
 		inputValidation = new ControllerInputValidator();
 
 		// Clean the collections.
