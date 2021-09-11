@@ -217,7 +217,7 @@
 					<configuration>
 						<excludes>
 							<exclude>**/model/*.*</exclude>
-							<exclude>**/app/ContactSwingApp.java</exclude>
+							<exclude>**/app/swing/ContactSwingApp.java</exclude>
 						</excludes>
 					</configuration>
 					<executions>
