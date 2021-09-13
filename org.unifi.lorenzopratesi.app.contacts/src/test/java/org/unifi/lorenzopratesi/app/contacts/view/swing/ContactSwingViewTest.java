@@ -99,24 +99,15 @@ class ContactSwingViewTest {
 	class ContactEnablingButtonsTests {
 
 		@Test
-		@DisplayName("Add Contact Button should be enabled when contact names and phone are not empty - testWhenContactNamesAndPhonesAreNotEmptyThenAddContactButtonShouldBeEnabled()")
-		void testWhenContactNamesAndPhonesAreNotEmptyThenAddContactButtonShouldBeEnabled() {
+		@DisplayName("Add Contact Button should be enabled when contact info are not empty - testWhenContactNamesAndPhonesAreNotEmptyThenAddContactButtonShouldBeEnabled()")
+		void testWhenContactOInfoAreNotEmptyThenAddContactButtonShouldBeEnabled() {
 			window.textBox("firstNameTextBox").enterText("test");
 			window.textBox("lastNameTextBox").enterText("test");
 			window.textBox("phoneTextBox").enterText("test");
-			window.textBox("emailTextBox").enterText("");
+			window.textBox("emailTextBox").enterText("test");
 			window.button("addContactButton").requireEnabled();
 		}
 
-		@Test
-		@DisplayName("Add Contact Button should be enabled when contact names and email are not empty - testWhenContactNamesAndEmailAreNotEmptyThenAddContactButtonShouldBeEnabled()")
-		void testWhenContactNamesAndEmailAreNotEmptyThenAddContactButtonShouldBeEnabled() {
-			window.textBox("firstNameTextBox").enterText("test");
-			window.textBox("lastNameTextBox").enterText("test");
-			window.textBox("emailTextBox").enterText("test");
-			window.textBox("phoneTextBox").enterText("");
-			window.button("addContactButton").requireEnabled();
-		}
 
 		@Test
 		@DisplayName("Add Contact Button should be disabled when contact infos are blank - testWhenSomeContactInfosAreBlankThenAddContactButtonShouldBeDisabled()")
@@ -138,8 +129,24 @@ class ContactSwingViewTest {
 
 			firstNameTextBox.enterText("test");
 			lastNameTextBox.enterText(" ");
-			emailTextBox.enterText("test");
 			phoneTextBox.enterText("test");
+			emailTextBox.enterText("test");
+			addContactButton.requireDisabled();
+
+			resetTextBoxFields(firstNameTextBox, lastNameTextBox, phoneTextBox, emailTextBox);
+			
+			firstNameTextBox.enterText("test");
+			lastNameTextBox.enterText("test");
+			phoneTextBox.enterText("test");
+			emailTextBox.enterText(" ");
+			addContactButton.requireDisabled();
+
+			resetTextBoxFields(firstNameTextBox, lastNameTextBox, phoneTextBox, emailTextBox);
+			
+			firstNameTextBox.enterText("test");
+			lastNameTextBox.enterText("test");
+			phoneTextBox.enterText(" ");
+			emailTextBox.enterText("test");
 			addContactButton.requireDisabled();
 
 			resetTextBoxFields(firstNameTextBox, lastNameTextBox, phoneTextBox, emailTextBox);
@@ -251,8 +258,8 @@ class ContactSwingViewTest {
 			// Setup.
 			window.textBox("firstNameTextBox").enterText("test");
 			window.textBox("lastNameTextBox").enterText("test");
-			window.textBox("phoneTextBox").enterText("0000000000");
 			window.textBox("emailTextBox").setText("test@email.com");
+			window.textBox("phoneTextBox").enterText("0000000000");
 
 			// Execute.
 			window.button("addContactButton").click();

@@ -18,7 +18,7 @@
 		<junit.version>5.7.0</junit.version>
 		<mockito.version>3.12.4</mockito.version>
 		<pitest.version>1.5.2</pitest.version>
-		<mongo.driver.version>3.12.7</mongo.driver.version>
+		<mongo.driver.version>3.12.10</mongo.driver.version>
 		<mongo.java.server.version>1.37.0</mongo.java.server.version>
 		<slf4f.version>1.7.21</slf4f.version>
 		<testcontainers.version>1.15.1</testcontainers.version>

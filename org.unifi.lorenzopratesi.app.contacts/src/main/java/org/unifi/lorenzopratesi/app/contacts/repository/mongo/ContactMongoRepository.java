@@ -1,5 +1,6 @@
 package org.unifi.lorenzopratesi.app.contacts.repository.mongo;
 
+import static java.util.Arrays.asList;
 import java.util.List;
 import static java.util.stream.Collectors.*;
 import java.util.stream.StreamSupport;
@@ -7,6 +8,7 @@ import java.util.stream.StreamSupport;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
@@ -15,6 +17,7 @@ import org.unifi.lorenzopratesi.app.contacts.repository.ContactRepository;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientSettings;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -32,7 +35,7 @@ public class ContactMongoRepository implements ContactRepository {
 
 	@Override
 	public List<Contact> findAll() {
-		return StreamSupport.stream(contactCollection.find().spliterator(), false).collect(toList());
+		return getCollectionListFrom(contactCollection.find());
 	}
 
 	@Override
@@ -41,9 +44,13 @@ public class ContactMongoRepository implements ContactRepository {
 	}
 
 	@Override
-	public Contact findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Contact> findByName(String name) {
+		Document rgxSearch = new Document("$regex", ".*" + name + ".*");
+		Document query = new Document("$or", asList(
+				new Document("firstName", rgxSearch), 
+				new Document("lastName", rgxSearch)
+		));
+		return getCollectionListFrom(contactCollection.find(query));
 	}
 
 	@Override
@@ -53,20 +60,24 @@ public class ContactMongoRepository implements ContactRepository {
 	}
 
 	@Override
-	public void updatePhone(Contact contact, String phone) {
-		// TODO Auto-generated method stub
-
+	public void updatePhone(String id, String phone) {
+		Document set = new Document("$set", new Document("phone", phone));
+		contactCollection.updateOne(Filters.eq("_id", stringToObjectId(id)), set);
 	}
 
 	@Override
-	public void updateEmail(Contact contact, String email) {
-		// TODO Auto-generated method stub
-
+	public void updateEmail(String id, String email) {
+		Document set = new Document("$set", new Document("email", email));
+		contactCollection.updateOne(Filters.eq("_id", stringToObjectId(id)), set);
 	}
 
 	@Override
 	public void delete(String id) {
 		contactCollection.deleteOne(Filters.eq("_id", stringToObjectId(id)));
+	}
+
+	private List<Contact> getCollectionListFrom(FindIterable<Contact> find) {
+		return StreamSupport.stream(find.spliterator(), false).collect(toList());
 	}
 
 	private Object stringToObjectId(String id) {

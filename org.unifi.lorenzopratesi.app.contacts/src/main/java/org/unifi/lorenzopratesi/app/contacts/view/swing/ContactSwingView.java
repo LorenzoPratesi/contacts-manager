@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
 public class ContactSwingView extends JFrame implements ContactView {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JPanel contentPane;
 	private JTextField txtFirstName;
 	private JTextField txtLastName;
@@ -58,9 +58,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 		KeyAdapter btnAddContactEnabler = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				btnAddContact
-						.setEnabled(!txtFirstName.getText().trim().isEmpty() && !txtLastName.getText().trim().isEmpty()
-								&& (!txtPhone.getText().trim().isEmpty() || !txtEmail.getText().trim().isEmpty()));
+				btnAddContact.setEnabled(addContactEnabledFields());
 			}
 		};
 
@@ -191,6 +189,13 @@ public class ContactSwingView extends JFrame implements ContactView {
 		gbc_lblMessage.gridx = 0;
 		gbc_lblMessage.gridy = 8;
 		contentPane.add(lblMessage, gbc_lblMessage);
+	}
+
+	protected boolean addContactEnabledFields() {
+		return 	!txtFirstName.getText().trim().isEmpty() && 
+				!txtLastName.getText().trim().isEmpty()  && 
+				!txtPhone.getText().trim().isEmpty() 	 && 
+				!txtEmail.getText().trim().isEmpty();
 	}
 
 	@Override

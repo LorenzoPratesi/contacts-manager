@@ -88,8 +88,8 @@ public class ContactSwingAppE2E extends AssertJSwingJUnitTestCase {
 	public void testAddContactButtonSuccess() {
 		window.textBox("firstNameTextBox").enterText("contact");
 		window.textBox("lastNameTextBox").enterText("contact");
-		window.textBox("phoneTextBox").enterText("0000000000");
 		window.textBox("emailTextBox").setText("contact@email.com");
+		window.textBox("phoneTextBox").enterText("0000000000");
 		window.button("addContactButton").click();
 		assertThat(window.list().contents())
 				.anySatisfy(e -> assertThat(e).contains("contact", "contact", "0000000000", "contact@email.com"));

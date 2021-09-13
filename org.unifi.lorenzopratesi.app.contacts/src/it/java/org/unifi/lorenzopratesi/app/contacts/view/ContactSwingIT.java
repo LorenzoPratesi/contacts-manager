@@ -42,13 +42,12 @@ class ContactSwingIT {
 	void onSetUp() {
 		// Set repositories and input validation.
 		int mongoPort = Integer.parseInt(System.getProperty("mongo.port", "27017"));
-		contactRepository = new ContactMongoRepository(new MongoClient(MONGO_CLIENT_HOST, mongoPort), DATABASE_NAME, COLLECTION_NAME);
+		contactRepository = new ContactMongoRepository(new MongoClient(MONGO_CLIENT_HOST, mongoPort), DATABASE_NAME,
+				COLLECTION_NAME);
 		inputValidation = new ControllerInputValidator();
 
 		// Clean the collections.
-		for (Contact contact : contactRepository.findAll()) {
-			contactRepository.delete(contact.getId());
-		}
+		contactRepository.findAll().forEach(c -> contactRepository.delete(c.getId()));
 
 		// Set swing view.
 		GuiActionRunner.execute(() -> {
@@ -91,8 +90,8 @@ class ContactSwingIT {
 		void testAddContactButtonSuccess() {
 			window.textBox("firstNameTextBox").enterText("test");
 			window.textBox("lastNameTextBox").enterText("test");
-			window.textBox("phoneTextBox").enterText("0000000000");
 			window.textBox("emailTextBox").setText("test@email.com");
+			window.textBox("phoneTextBox").enterText("0000000000");
 			window.button("addContactButton").click();
 			Contact newContact = contactRepository.findAll().get(0);
 

@@ -8,17 +8,16 @@ public interface ContactRepository {
 
 	public List<Contact> findAll();
 
-	public Contact findById(String id);
+	public List<Contact> findByName(String name);
 
-	public Contact findByName(String name);
+	public Contact findById(String id);
 
 	public void save(Contact contact);
 
-	public void updatePhone(Contact contact, String phone);
+	public void updatePhone(String id, String phone);
 
-	public void updateEmail(Contact contact, String email);
+	public void updateEmail(String id, String email);
 
 	public void delete(String id);
-
 
 }
