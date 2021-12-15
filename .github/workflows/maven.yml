@@ -19,31 +19,58 @@ jobs:
 
     name: Build with Java ${{ matrix.java }} on Linux
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v1
-      with:
-        java-version: ${{ matrix.java }}
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2-
-    - name: Build with Maven
-      run: >
-        xvfb-run mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
-        clean verify ${{ matrix.additional-maven-args }}
-      env: 
-        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-    - name: Generate JUnit Report
-      run: >
-        mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
-        surefire-report:report-only site:site -DgenerateReports=false
-      if: ${{ always() }}
-    - name: Archive JUnit Report
-      uses: actions/upload-artifact@v2
-      if: ${{ always() }}
-      with:
-        name: surefire-report-jdk-${{ matrix.java }}
-        path: '**/target/site'
+      - uses: actions/checkout@v2
+        with:
+        # Shallow clones should be disabled for a better relevancy of SonarQube analysis
+        fetch-depth: 0
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2-
+
+      - name: Build with Maven
+        run: >
+          xvfb-run mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
+          clean verify ${{ matrix.additional-maven-args }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2
+            ~/.sonar/cache
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
+          restore-keys: ${{ runner.os }}-m2-
+
+      - name: Build with Maven and SonarCloud
+        run: >
+          xvfb-run mvn verify -Pjacoco sonar:sonar
+          -Dsonar.organization=lorenzopratesi
+          -Dsonar.host.url=https://sonarcloud.io
+        working-directory: org.unifi.lorenzopratesi.app.contacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Generate JUnit Report
+        run: >
+          mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
+          surefire-report:report-only site:site -DgenerateReports=false
+        if: ${{ always() }}
+
+      - name: Archive JUnit Report
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: surefire-report-jdk-${{ matrix.java }}
+          path: '**/target/site'
