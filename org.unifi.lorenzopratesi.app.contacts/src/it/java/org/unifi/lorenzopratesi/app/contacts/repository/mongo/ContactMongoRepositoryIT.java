@@ -63,7 +63,7 @@ class ContactMongoRepositoryIT {
 		contactCollection.insertMany(asList(contact1, contact2));
 		assertThat(contactMongoRepository.findAll()).containsExactly(
 				new Contact(contact1.getId(), "testFirstName1", "testLastName1", "1111111111", "test1@email.com"),
-				new Contact(contact1.getId(), "testFirstName2", "testLastName2", "2222222222", "test2@email.com"));
+				new Contact(contact2.getId(), "testFirstName2", "testLastName2", "2222222222", "test2@email.com"));
 	}
 	
 	@Test

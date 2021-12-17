@@ -87,10 +87,8 @@ class ContactMongoRepositoryTest {
 
 	@ParameterizedTest
 	@MethodSource("provideValuesForFindByNameTest")
-	void testFindByNameShouldReturnAListOfContactMatches(String input, List<Contact> expected) {
-		Contact contact1 = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
-		Contact contact2 = new Contact("testFirstName2", "testLastName2", "2222222222", "test2@email.com");
-		contactCollection.insertMany(asList(contact1, contact2));
+	void testFindByNameShouldReturnAListOfContactMatches(List<Contact> contacts, String input, List<Contact> expected) {
+		contactCollection.insertMany(contacts);
 		assertThat(contactMongoRepository.findByName(input)).isEqualTo(expected);
 	}
 
@@ -114,12 +112,12 @@ class ContactMongoRepositoryTest {
 	}
 
 	@Test
-	void testFindByIdShouldReturnNullWhenGuestIdIsNotFound() {
+	void testFindByIdShouldReturnNullWhenContactIdIsNotFound() {
 		assertThat(contactMongoRepository.findById(new ObjectId().toString())).isNull();
 	}
 
 	@Test
-	void testFindByIdShouldReturnTheGuestWhenIdIsFound() {
+	void testFindByIdShouldReturnTheContactWhenIdIsFound() {
 		Contact contactToFind = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
 		Contact anotherContact = new Contact("testFirstName2", "testLastName2", "2222222222", "test2@email.com");
 		contactCollection.insertMany(asList(contactToFind, anotherContact));
@@ -160,16 +158,16 @@ class ContactMongoRepositoryTest {
 	private static Stream<Arguments> provideValuesForFindByNameTest() {
 		Contact contact1 = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
 		Contact contact2 = new Contact("testFirstName2", "testLastName2", "2222222222", "test2@email.com");
-		
+		List<Contact> contacts = asList(contact1, contact2);
 		return Stream.of(
-				Arguments.of("testFirstName1", asList(contact1)),
-				Arguments.of("FirstName1", asList(contact1)),
-				Arguments.of("FirstName", asList(contact1, contact2)),
-				Arguments.of("LastName1", asList(contact1)),
-				Arguments.of("LastName", asList(contact1, contact2)),
-				Arguments.of("nonMatchingContact", emptyList()),
-				Arguments.of("", asList(contact1, contact2)),
-				Arguments.of(" ", emptyList())
+				Arguments.of(contacts, "testFirstName1", asList(contact1)),
+				Arguments.of(contacts, "FirstName1", asList(contact1)),
+				Arguments.of(contacts, "FirstName", asList(contact1, contact2)),
+				Arguments.of(contacts, "LastName1", asList(contact1)),
+				Arguments.of(contacts, "LastName", asList(contact1, contact2)),
+				Arguments.of(contacts, "nonMatchingContact", emptyList()),
+				Arguments.of(contacts, "", asList(contact1, contact2)),
+				Arguments.of(contacts, " ", emptyList())
 		);
 	}
 

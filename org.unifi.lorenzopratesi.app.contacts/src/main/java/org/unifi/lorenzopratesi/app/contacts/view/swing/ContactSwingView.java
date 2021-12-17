@@ -32,7 +32,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 	private JTextField txtLastName;
 	private JTextField txtPhone;
 	private JTextField txtEmail;
-	private ContactController contactController;
+	private transient ContactController contactController;
 	private JLabel lblMessage;
 	private JButton btnAddContact;
 	private JList<Contact> listContacts;

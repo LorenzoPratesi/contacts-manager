@@ -71,8 +71,8 @@ class ModelViewControllerIT {
 		window.textBox("phoneTextBox").enterText("0000000000");
 		window.button("addContactButton").click();
 		// ...verify that it has been added to the database
-		Contact contactAdded = new Contact("test", "test", "0000000000", "test@email.com");
-		assertThat(contactRepository.findAll().get(0)).isEqualTo(contactAdded);
+		Contact contactAdded = contactRepository.findAll().get(0);
+		assertThat(contactAdded).isEqualTo(new Contact(contactAdded.getId(), "test", "test", "0000000000", "test@email.com"));
 	}
 
 	@Test

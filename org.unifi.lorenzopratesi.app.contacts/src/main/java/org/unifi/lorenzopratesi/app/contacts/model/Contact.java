@@ -6,13 +6,12 @@ import org.bson.BsonType;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
 
-
 public class Contact {
-	
+
 	@BsonId
 	@BsonRepresentation(BsonType.OBJECT_ID)
 	private String id;
-	
+
 	private String firstName;
 	private String lastName;
 	private String phone;
@@ -28,18 +27,18 @@ public class Contact {
 		this.phone = phone;
 		this.email = email;
 	}
-	
+
 	public Contact(String firstName, String lastName, String phone, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
 		this.email = email;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -78,8 +77,8 @@ public class Contact {
 
 	@Override
 	public String toString() {
-		return "Contact [firstName=" + firstName + ", lastName=" + lastName + ", phone=" + phone + ", email=" + email
-				+ "]";
+		return "Contact [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phone=" + phone
+				+ ", email=" + email + "]";
 	}
 
 	@Override
@@ -96,29 +95,9 @@ public class Contact {
 		if (getClass() != obj.getClass())
 			return false;
 		Contact other = (Contact) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
-			return false;
-		if (phone == null) {
-			if (other.phone != null)
-				return false;
-		} else if (!phone.equals(other.phone))
-			return false;
-		return true;
+		return Objects.equals(id, other.id) && Objects.equals(firstName, other.firstName)
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(phone, other.phone);
+
 	}
-	
-	
 
 }
