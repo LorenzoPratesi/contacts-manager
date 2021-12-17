@@ -37,7 +37,6 @@ jobs:
           restore-keys: ${{ runner.os }}-m2-
 
       - name: Build with Maven
-        if: ${{ matrix.java == 11 }}
         run: >
           xvfb-run mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
           clean verify ${{ matrix.additional-maven-args }}
@@ -54,6 +53,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2-
 
       - name: Build with Maven and SonarCloud
+        if: ${{ matrix.java == 11 }}
         run: >
           xvfb-run mvn verify -Pjacoco sonar:sonar
           -Dsonar.organization=lorenzopratesi
