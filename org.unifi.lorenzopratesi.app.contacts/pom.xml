@@ -26,6 +26,9 @@
 		<maven.surfire.plugin.version>2.22.2</maven.surfire.plugin.version>
 		<failsafe.version>2.22.2</failsafe.version>
 
+		<sonar.organization>lorenzopratesi</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
 		<!-- For each rule to be ignore, add another eXX and two corresponding 
 			properties with eXX in the name as below -->
 		<sonar.issue.ignore.multicriteria>e11,e12,e13</sonar.issue.ignore.multicriteria>

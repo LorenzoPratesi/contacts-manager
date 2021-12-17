@@ -1,7 +1,5 @@
 package org.unifi.lorenzopratesi.app.contacts.controller;
 
-import static java.util.Arrays.asList;
-
 import org.unifi.lorenzopratesi.app.contacts.model.Contact;
 import org.unifi.lorenzopratesi.app.contacts.repository.ContactRepository;
 import org.unifi.lorenzopratesi.app.contacts.validation.InputValidation;

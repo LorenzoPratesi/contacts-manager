@@ -123,7 +123,7 @@ class ContactControllerTest {
 	}
 
 	@Test
-	public void testAddContactWhenInfoAreValidAndContactWithSameIdExistsShouldNotCreateNewEntry() {
+	void testAddContactWhenInfoAreValidAndContactWithSameIdExistsShouldNotCreateNewEntry() {
 		Contact existingContact = new Contact("1", "testFirstName", "testLastName", "1234567890", "test@email.com");
 		Contact newContact = new Contact("1", "testFirstName", "testLastName", "1234567890", "test@email.com");
 
