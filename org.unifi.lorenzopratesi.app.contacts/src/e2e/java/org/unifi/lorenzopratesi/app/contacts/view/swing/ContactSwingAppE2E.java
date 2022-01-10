@@ -124,6 +124,37 @@ public class ContactSwingAppE2E extends AssertJSwingJUnitTestCase {
 		assertThat(window.label("messageLabel").text()).contains("testFirstName1", "testLastName1");
 	}
 
+	@Test
+	@GUITest
+	public void testEditContactButtonWhenPhoneIsSelectedContactIsSelectedAndFieldIsFilled() {
+		String newContactPhone = "0000000000";
+
+		window.list("contactsList").selectItem(Pattern.compile(".*testFirstName1.*testLastName1.*"));
+		window.comboBox("comboBoxEditAttribute").selectItem("Phone");
+		window.textBox("newAttributeTextBox").enterText(newContactPhone);
+		window.button("editContactButton").click();
+		
+		Contact updatedContact = new Contact(CONTACT_FIXTURE_1_ID, "testFirstName1", "testLastName1", newContactPhone, "test1@email.com");
+		String[] listProducts = window.list().contents();
+		assertThat(listProducts).contains(updatedContact.toString());
+	}
+	
+	@Test
+	@GUITest
+	public void testEditContactButtonWhenEmailIsSelectedContactIsSelectedAndFieldIsFilledWithValidEmail() {
+		String newContactEmail = "newemail@gmail.com";
+
+		window.list("contactsList").selectItem(Pattern.compile(".*testFirstName1.*testLastName1.*"));
+		window.comboBox("comboBoxEditAttribute").selectItem("Email");
+		window.textBox("newAttributeTextBox").enterText(newContactEmail);
+		window.textBox("newAttributeTextBox").setText(newContactEmail);
+		window.button("editContactButton").click();
+		
+		Contact updatedContact = new Contact(CONTACT_FIXTURE_1_ID, "testFirstName1", "testLastName1", "1111111111", newContactEmail);
+		String[] listProducts = window.list().contents();
+		assertThat(listProducts).contains(updatedContact.toString());
+	}
+	
 	private void addTestContactToDatabase(Contact guest) {
 		mongoClient.getDatabase(DATABASE_NAME).withCodecRegistry(pojoCodecRegistry)
 				.getCollection(CONTACT_COLLECTION_NAME, Contact.class).insertOne(guest);

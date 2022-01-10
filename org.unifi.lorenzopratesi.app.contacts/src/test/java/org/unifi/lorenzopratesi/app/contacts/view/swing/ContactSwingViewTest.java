@@ -108,7 +108,6 @@ class ContactSwingViewTest {
 			window.button("addContactButton").requireEnabled();
 		}
 
-
 		@Test
 		@DisplayName("Add Contact Button should be disabled when contact infos are blank - testWhenSomeContactInfosAreBlankThenAddContactButtonShouldBeDisabled()")
 		void testWhenSomeContactInfosAreBlankThenAddContactButtonShouldBeDisabled() {
@@ -134,7 +133,7 @@ class ContactSwingViewTest {
 			addContactButton.requireDisabled();
 
 			resetTextBoxFields(firstNameTextBox, lastNameTextBox, phoneTextBox, emailTextBox);
-			
+
 			firstNameTextBox.enterText("test");
 			lastNameTextBox.enterText("test");
 			phoneTextBox.enterText("test");
@@ -142,7 +141,7 @@ class ContactSwingViewTest {
 			addContactButton.requireDisabled();
 
 			resetTextBoxFields(firstNameTextBox, lastNameTextBox, phoneTextBox, emailTextBox);
-			
+
 			firstNameTextBox.enterText("test");
 			lastNameTextBox.enterText("test");
 			phoneTextBox.enterText(" ");
@@ -168,6 +167,24 @@ class ContactSwingViewTest {
 			deleteContactButton.requireEnabled();
 			contactsList.clearSelection();
 			deleteContactButton.requireDisabled();
+		}
+
+		@Test
+		@DisplayName("Edit Contact Button should be enabled only when a Contact is selected - testDeleteContactButtonShouldBeEnabledOnlyWhenAContactIsSelected()")
+		public void testEditContactButtonShouldBeEnabledWhenAContactIsSelectedAndFieldIsFilledWithString() {
+			// Setup.
+			Contact contact = new Contact("1", "testFirstName", "testLastName", "0000000000", "test@email.com");
+
+			// Execute.
+			GuiActionRunner.execute(() -> contactSwingView.getListContactsModel().addElement(contact));
+
+			// Verify.
+			JListFixture contactsList = window.list("contactsList");
+			JButtonFixture editContactButton = window.button("editContactButton");
+			contactsList.selectItem(0);
+
+			window.textBox("newAttributeTextBox").enterText("testNewFirstName");
+			editContactButton.requireEnabled();
 		}
 
 		private void resetTextBoxFields(JTextComponentFixture... textBoxFields) {
@@ -246,6 +263,28 @@ class ContactSwingViewTest {
 			window.label("messageLabel").requireText(" ");
 		}
 
+		@Test
+		@DisplayName("Contact Edited should edit the contact from the list and then clear the error log label - testContactEditedShouldEditTheContactFromTheListAndThenClearTheErrorLogLabel()")
+		void testContactEditedShouldEditTheContactFromTheListAndThenClearTheErrorLogLabel() {
+			// Setup.
+			Contact contactToEdit = new Contact("testFirstName1", "testLastName1", "0000000000", "test1@email.com");
+			Contact anotherContact = new Contact("testFirstName2", "testLastName2", "1111111111", "test2@email.com");
+
+			GuiActionRunner.execute(() -> {
+				DefaultListModel<Contact> listContactsModel = contactSwingView.getListContactsModel();
+				listContactsModel.addElement(contactToEdit);
+			});
+
+			// Execute.
+			GuiActionRunner.execute(() -> contactSwingView.contactEdited(anotherContact));
+
+			// Verify.
+			String[] contactsListContent = window.list("contactsList").contents();
+			assertThat(contactsListContent).containsExactly(anotherContact.toString());
+			window.label("messageLabel").requireText(" ");
+			window.textBox("newAttributeTextBox").requireText("");
+		}
+
 	}
 
 	@Nested
@@ -288,6 +327,50 @@ class ContactSwingViewTest {
 
 			// Verify.
 			verify(contactController).deleteContact(contactToDelete);
+		}
+
+		@Test
+		@DisplayName("Edit Contact Button should delegate to contact controller updatePhone() - testEditContactButtonShouldDelegateToContactControllerUpdatePhoneIfPhoneIsSelected()")
+		void testEditContactButtonShouldDelegateToContactControllerUpdatePhoneIfPhoneIsSelected() {
+			// Setup.
+			Contact contactToEdit = new Contact("1", "testFirstName1", "testLastName1", "0000000000",
+					"test1@email.com");
+
+			GuiActionRunner.execute(() -> {
+				DefaultListModel<Contact> listContactsModel = contactSwingView.getListContactsModel();
+				listContactsModel.addElement(contactToEdit);
+			});
+			window.list("contactsList").selectItem(0);
+			window.comboBox("comboBoxEditAttribute").selectItem("Phone");
+			window.textBox("newAttributeTextBox").enterText("1111111111");
+
+			// Execute.
+			window.button("editContactButton").click();
+
+			// Verify.
+			verify(contactController).updatePhone(contactToEdit, "1111111111");
+		}
+
+		@Test
+		@DisplayName("Edit Contact Button should delegate to contact controller updateEmail() - testEditContactButtonShouldDelegateToContactControllerUpdateEmailIfEmailIsSelected()")
+		void testEditContactButtonShouldDelegateToContactControllerUpdateEmailIfEmailIsSelected() {
+			// Setup.
+			Contact contactToEdit = new Contact("1", "testFirstName1", "testLastName1", "0000000000",
+					"test1@email.com");
+
+			GuiActionRunner.execute(() -> {
+				DefaultListModel<Contact> listContactsModel = contactSwingView.getListContactsModel();
+				listContactsModel.addElement(contactToEdit);
+			});
+			window.list("contactsList").selectItem(0);
+			window.comboBox("comboBoxEditAttribute").selectItem("Email");
+			window.textBox("newAttributeTextBox").enterText("test");
+
+			// Execute.
+			window.button("editContactButton").click();
+
+			// Verify.
+			verify(contactController).updateEmail(contactToEdit, "test");
 		}
 
 	}

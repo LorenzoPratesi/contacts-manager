@@ -139,5 +139,54 @@ class ContactSwingIT {
 					+ contact.getFirstName() + ", " + contact.getLastName());
 		}
 
+		@Test
+		@DisplayName("Edit contact button should change phone if selected - testEditContactButtonWhenPhoneIsSelectedShouldChangeContactPhoneInTheList()")
+		public void testEditContactButtonWhenPhoneIsSelectedShouldChangeContactPhoneInTheList() {
+			Contact contactToEdit = new Contact("testFirstName", "testLastName", "0000000000", "test@email.com");
+			GuiActionRunner.execute(() -> contactController.newContact(contactToEdit));
+
+			window.list("contactsList").selectItem(0);
+			window.comboBox("comboBoxEditAttribute").selectItem("Phone");
+			window.textBox("newAttributeTextBox").enterText("1111111111");
+
+			window.button("editContactButton").click();
+			Contact contactWithUpdatedPhone = new Contact(contactToEdit.getId(), "testFirstName", "testLastName",
+					"1111111111", "test@email.com");
+			assertThat(window.list("contactsList").contents()).containsExactly(contactWithUpdatedPhone.toString());
+		}
+
+		@Test
+		@DisplayName("Edit contact button should change email if selected - testEditContactButtonWhenEmailIsSelectedShouldChangeContactEmailInTheList()")
+		public void testEditContactButtonWhenEmailIsSelectedShouldChangeContactEmailInTheList() {
+			Contact contactToEdit = new Contact("testFirstName", "testLastName", "0000000000", "test@email.com");
+			GuiActionRunner.execute(() -> contactController.newContact(contactToEdit));
+
+			window.list("contactsList").selectItem(0);
+			window.comboBox("comboBoxEditAttribute").selectItem("Email");
+			String newContactEmail = "new@gmail.com";
+			window.textBox("newAttributeTextBox").enterText(newContactEmail);
+			window.textBox("newAttributeTextBox").setText(newContactEmail);
+
+			window.button("editContactButton").click();
+			Contact contactWithUpdatedPhone = new Contact(contactToEdit.getId(), "testFirstName", "testLastName",
+					"0000000000", newContactEmail);
+			assertThat(window.list("contactsList").contents()).containsExactly(contactWithUpdatedPhone.toString());
+		}
+
+		@Test
+		@DisplayName("Edit contact button should show error when contact does not exist in the database - testEditContactButtonWhenContactDoesNotExistInTheDatabase()")
+		public void testEditContactButtonWhenContactDoesNotExistInTheDatabase() {
+			Contact contactToEdit = new Contact("testFirstName", "testLastName", "0000000000", "test@email.com");
+			GuiActionRunner.execute(() -> contactSwingView.getListContactsModel().addElement(contactToEdit));
+
+			window.list("contactsList").selectItem(0);
+			window.comboBox("comboBoxEditAttribute").selectItem("Phone");
+			window.textBox("newAttributeTextBox").enterText("1111111111");
+
+			window.button("editContactButton").click();
+			window.label("messageLabel").requireText(String.format("There is no contact with id %s, %s, %s",
+					contactToEdit.getId(), contactToEdit.getFirstName(), contactToEdit.getLastName()));
+		}
+
 	}
 }
