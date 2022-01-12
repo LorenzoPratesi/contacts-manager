@@ -70,10 +70,10 @@ public class ContactSwingView extends JFrame implements ContactView {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] { 86, 56, 0, 0, 0, 44, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 40, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 40, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE, 1.0, 0.0, 0.0, 0.0, 1.0 };
 		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, Double.MIN_VALUE };
+				0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
 		KeyAdapter btnAddContactEnabler = new KeyAdapter() {
@@ -123,9 +123,9 @@ public class ContactSwingView extends JFrame implements ContactView {
 		textFieldSearch.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				 filter();
+				filter();
 			}
-			
+
 			private void filter() {
 				String filter = textFieldSearch.getText();
 				if (filter.length() >= 3) {
@@ -137,8 +137,8 @@ public class ContactSwingView extends JFrame implements ContactView {
 
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridheight = 13;
-		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_scrollPane.gridheight = 14;
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridwidth = 5;
 		gbc_scrollPane.gridx = 0;
@@ -159,11 +159,6 @@ public class ContactSwingView extends JFrame implements ContactView {
 		scrollPane.setViewportView(listContacts);
 		listContacts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listContacts.setName("contactsList");
-
-		btnAddContact = new JButton("Add Contact");
-		btnAddContact.setName("addContactButton");
-		btnAddContact.addActionListener(e -> contactController.newContact(
-				new Contact(txtFirstName.getText(), txtLastName.getText(), txtPhone.getText(), txtEmail.getText())));
 
 		JLabel lblNewLabel_1 = new JLabel("First Name");
 		lblNewLabel_1.setName("firstNameLabel");
@@ -244,41 +239,29 @@ public class ContactSwingView extends JFrame implements ContactView {
 		gbc_textField_4.gridy = 4;
 		contentPane.add(txtEmail, gbc_textField_4);
 		txtEmail.setColumns(10);
-		btnAddContact.setEnabled(false);
-		GridBagConstraints gbc_btnAddContact = new GridBagConstraints();
-		gbc_btnAddContact.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAddContact.gridx = 6;
-		gbc_btnAddContact.gridy = 5;
-		contentPane.add(btnAddContact, gbc_btnAddContact);
 
 		btnDeleteSelected = new JButton("Delete Selected");
 		btnDeleteSelected.addActionListener(e -> contactController.deleteContact(listContacts.getSelectedValue()));
+
+		btnAddContact = new JButton("Add Contact");
+		btnAddContact.setName("addContactButton");
+		btnAddContact.addActionListener(e -> contactController.newContact(
+				new Contact(txtFirstName.getText(), txtLastName.getText(), txtPhone.getText(), txtEmail.getText())));
+		btnAddContact.setEnabled(false);
+		GridBagConstraints gbc_btnAddContact = new GridBagConstraints();
+		gbc_btnAddContact.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnAddContact.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAddContact.gridx = 7;
+		gbc_btnAddContact.gridy = 5;
+		contentPane.add(btnAddContact, gbc_btnAddContact);
 		btnDeleteSelected.setName("deleteContactButton");
 		btnDeleteSelected.setEnabled(false);
 		GridBagConstraints gbc_btnDeleteSelected = new GridBagConstraints();
+		gbc_btnDeleteSelected.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnDeleteSelected.insets = new Insets(0, 0, 5, 0);
 		gbc_btnDeleteSelected.gridx = 7;
-		gbc_btnDeleteSelected.gridy = 5;
+		gbc_btnDeleteSelected.gridy = 6;
 		contentPane.add(btnDeleteSelected, gbc_btnDeleteSelected);
-
-		lblInfoMessages = new JLabel("Info messages");
-		lblInfoMessages.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
-		GridBagConstraints gbc_lblInfoMessages = new GridBagConstraints();
-		gbc_lblInfoMessages.anchor = GridBagConstraints.WEST;
-		gbc_lblInfoMessages.gridwidth = 2;
-		gbc_lblInfoMessages.insets = new Insets(0, 0, 5, 0);
-		gbc_lblInfoMessages.gridx = 6;
-		gbc_lblInfoMessages.gridy = 12;
-		contentPane.add(lblInfoMessages, gbc_lblInfoMessages);
-
-		lblMessage = new JLabel("");
-		lblMessage.setName("messageLabel");
-		GridBagConstraints gbc_lblMessage = new GridBagConstraints();
-		gbc_lblMessage.gridwidth = 2;
-		gbc_lblMessage.gridheight = 2;
-		gbc_lblMessage.gridx = 6;
-		gbc_lblMessage.gridy = 13;
-		contentPane.add(lblMessage, gbc_lblMessage);
 
 		lblEditSelectedContact = new JLabel("Edit selected contact");
 		lblEditSelectedContact.setFont(new Font("Lucida Grande", Font.BOLD, 13));
@@ -288,7 +271,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 		gbc_lblEditSelectedContact.gridwidth = 2;
 		gbc_lblEditSelectedContact.insets = new Insets(0, 0, 5, 0);
 		gbc_lblEditSelectedContact.gridx = 6;
-		gbc_lblEditSelectedContact.gridy = 7;
+		gbc_lblEditSelectedContact.gridy = 8;
 		contentPane.add(lblEditSelectedContact, gbc_lblEditSelectedContact);
 
 		lblAttributeToEdit = new JLabel("Attribute");
@@ -297,7 +280,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 		gbc_lblAttributeToEdit.anchor = GridBagConstraints.WEST;
 		gbc_lblAttributeToEdit.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAttributeToEdit.gridx = 6;
-		gbc_lblAttributeToEdit.gridy = 8;
+		gbc_lblAttributeToEdit.gridy = 9;
 		contentPane.add(lblAttributeToEdit, gbc_lblAttributeToEdit);
 
 		comboBoxEditAttribute = new JComboBox<>();
@@ -308,7 +291,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 		gbc_comboBoxEditAttribute.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBoxEditAttribute.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBoxEditAttribute.gridx = 7;
-		gbc_comboBoxEditAttribute.gridy = 8;
+		gbc_comboBoxEditAttribute.gridy = 9;
 		contentPane.add(comboBoxEditAttribute, gbc_comboBoxEditAttribute);
 
 		lblNewAttributeValue = new JLabel("New value");
@@ -317,7 +300,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 		gbc_lblNewAttributeValue.anchor = GridBagConstraints.WEST;
 		gbc_lblNewAttributeValue.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewAttributeValue.gridx = 6;
-		gbc_lblNewAttributeValue.gridy = 9;
+		gbc_lblNewAttributeValue.gridy = 10;
 		contentPane.add(lblNewAttributeValue, gbc_lblNewAttributeValue);
 
 		textFieldNewAttribute = new JTextField();
@@ -327,20 +310,9 @@ public class ContactSwingView extends JFrame implements ContactView {
 		gbc_textFieldNewAttribute.insets = new Insets(0, 0, 5, 0);
 		gbc_textFieldNewAttribute.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldNewAttribute.gridx = 7;
-		gbc_textFieldNewAttribute.gridy = 9;
+		gbc_textFieldNewAttribute.gridy = 10;
 		contentPane.add(textFieldNewAttribute, gbc_textFieldNewAttribute);
 		textFieldNewAttribute.setColumns(10);
-
-		btnEditAttribute = new JButton("Edit");
-		btnEditAttribute.setName("editContactButton");
-		btnEditAttribute.setEnabled(false);
-		GridBagConstraints gbc_btnEditAttribute = new GridBagConstraints();
-		gbc_btnEditAttribute.insets = new Insets(0, 0, 5, 0);
-		gbc_btnEditAttribute.gridwidth = 2;
-		gbc_btnEditAttribute.gridx = 6;
-		gbc_btnEditAttribute.gridy = 10;
-		contentPane.add(btnEditAttribute, gbc_btnEditAttribute);
-
 		KeyAdapter editProductButtonEnabler = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -349,16 +321,46 @@ public class ContactSwingView extends JFrame implements ContactView {
 		};
 		textFieldNewAttribute.addKeyListener(editProductButtonEnabler);
 
+		btnEditAttribute = new JButton("Edit");
+		btnEditAttribute.setName("editContactButton");
+		btnEditAttribute.setEnabled(false);
+		GridBagConstraints gbc_btnEditAttribute = new GridBagConstraints();
+		gbc_btnEditAttribute.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnEditAttribute.insets = new Insets(0, 0, 5, 0);
+		gbc_btnEditAttribute.gridx = 7;
+		gbc_btnEditAttribute.gridy = 11;
+		contentPane.add(btnEditAttribute, gbc_btnEditAttribute);
+
 		btnEditAttribute.addActionListener(e -> {
 			Object selectedItem = comboBoxEditAttribute.getSelectedItem();
 			if (selectedItem == "Phone") {
 				contactController.updatePhone(listContacts.getSelectedValue(), textFieldNewAttribute.getText());
-			} 
-			
+			}
+
 			if (selectedItem == "Email") {
 				contactController.updateEmail(listContacts.getSelectedValue(), textFieldNewAttribute.getText());
 			}
 		});
+
+		lblInfoMessages = new JLabel("Info messages");
+		lblInfoMessages.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
+		GridBagConstraints gbc_lblInfoMessages = new GridBagConstraints();
+		gbc_lblInfoMessages.anchor = GridBagConstraints.WEST;
+		gbc_lblInfoMessages.gridwidth = 2;
+		gbc_lblInfoMessages.insets = new Insets(0, 0, 5, 0);
+		gbc_lblInfoMessages.gridx = 6;
+		gbc_lblInfoMessages.gridy = 13;
+		contentPane.add(lblInfoMessages, gbc_lblInfoMessages);
+
+		lblMessage = new JLabel("");
+		lblMessage.setName("messageLabel");
+		GridBagConstraints gbc_lblMessage = new GridBagConstraints();
+		gbc_lblMessage.gridwidth = 2;
+		gbc_lblMessage.gridheight = 2;
+		gbc_lblMessage.gridx = 6;
+		gbc_lblMessage.gridy = 14;
+		contentPane.add(lblMessage, gbc_lblMessage);
+
 	}
 
 	protected boolean addContactEnabledFields() {
