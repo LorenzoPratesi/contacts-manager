@@ -187,6 +187,43 @@ class ContactSwingIT {
 			window.label("messageLabel").requireText(String.format("There is no contact with id %s, %s, %s",
 					contactToEdit.getId(), contactToEdit.getFirstName(), contactToEdit.getLastName()));
 		}
+		
+
+		@Test
+		@DisplayName("Search field should display zero contacts if no matches in database - testSearchFieldShouldDisplayZeroContactsIfNoMatchesInDatabase()")
+		public void testSearchFieldShouldDisplayZeroContactsIfNoMatchesInDatabase() {
+			// Setup.
+			Contact contact1 = new Contact("testFirstName1", "testLastName1", "0000000000", "test1@email.com");
+			Contact contact2 = new Contact("testFirstName2", "testLastName2", "1111111111", "test2@email.com");
+			contactRepository.save(contact1);
+			contactRepository.save(contact2);
+
+			GuiActionRunner.execute(() -> contactController.allContacts());
+
+			// Execute.
+			window.textBox("textFieldSearch").enterText("testFirstName3");
+			
+			// Verify.
+			assertThat(window.list().contents()).isEmpty();
+		}
+
+		@Test
+		@DisplayName("Search field should display filtered contacts if matches in database - testSearchFieldShouldDisplayFilteredContactsIfMatchesInDatabase()")
+		public void testSearchFieldShouldDisplayFilteredContactsIfMatchesInDatabase() {
+			// Setup.
+			Contact contact1 = new Contact("testFirstName1", "testLastName1", "0000000000", "test1@email.com");
+			Contact contact2 = new Contact("testFirstName2", "testLastName2", "1111111111", "test2@email.com");
+			contactRepository.save(contact1);
+			contactRepository.save(contact2);
+
+			GuiActionRunner.execute(() -> contactController.allContacts());
+
+			// Execute.
+			window.textBox("textFieldSearch").enterText("testFirstName1");
+			
+			// Verify.
+			assertThat(window.list().contents()).containsExactly(contact1.toString());
+		}
 
 	}
 }

@@ -6,18 +6,18 @@ import org.unifi.lorenzopratesi.app.contacts.model.Contact;
 
 public interface ContactRepository {
 
-	public List<Contact> findAll();
+	List<Contact> findAll();
 
-	public List<Contact> findByName(String name);
+	List<Contact> findByName(String name);
 
-	public Contact findById(String id);
+	Contact findById(String id);
 
-	public void save(Contact contact);
+	void save(Contact contact);
 
-	public void updatePhone(String id, String phone);
+	void updatePhone(String id, String phone);
 
-	public void updateEmail(String id, String email);
+	void updateEmail(String id, String email);
 
-	public void delete(String id);
+	void delete(String id);
 
 }

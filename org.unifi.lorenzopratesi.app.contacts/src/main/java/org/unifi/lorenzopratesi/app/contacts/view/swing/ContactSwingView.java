@@ -1,6 +1,5 @@
 package org.unifi.lorenzopratesi.app.contacts.view.swing;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
@@ -8,6 +7,8 @@ import java.util.stream.IntStream;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.unifi.lorenzopratesi.app.contacts.controller.ContactController;
 import org.unifi.lorenzopratesi.app.contacts.model.Contact;
@@ -55,11 +56,13 @@ public class ContactSwingView extends JFrame implements ContactView {
 	private JLabel lblNewAttributeValue;
 	private JTextField textFieldNewAttribute;
 	private JLabel lblInfoMessages;
+	private JLabel lblNewLabel;
+	private JTextField textFieldSearch;
 
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ContactSwingView() {
 		setTitle("Contact Manager");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,14 +104,61 @@ public class ContactSwingView extends JFrame implements ContactView {
 		gbc_lblAddNewContact.gridy = 0;
 		contentPane.add(lblAddNewContact, gbc_lblAddNewContact);
 
+		lblNewLabel = new JLabel("Search");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 1;
+		contentPane.add(lblNewLabel, gbc_lblNewLabel);
+
+		textFieldSearch = new JTextField();
+		textFieldSearch.setName("textFieldSearch");
+		GridBagConstraints gbc_textFieldSearch = new GridBagConstraints();
+		gbc_textFieldSearch.gridwidth = 4;
+		gbc_textFieldSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldSearch.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldSearch.gridx = 1;
+		gbc_textFieldSearch.gridy = 1;
+		contentPane.add(textFieldSearch, gbc_textFieldSearch);
+		textFieldSearch.setColumns(10);
+
+		textFieldSearch.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				filter();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				filter();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				filter();
+			}
+
+			private void filter() {
+				String filter = textFieldSearch.getText();
+				if (filter.length() >= 3) {
+					filterModel((DefaultListModel<Contact>) listContactsModel, filter);
+				}
+			}
+
+			private void filterModel(DefaultListModel<Contact> model, String filter) {
+				listContactsModel.clear();
+				contactController.findByName(filter);
+			}
+		});
+
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridheight = 14;
+		gbc_scrollPane.gridheight = 13;
 		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridwidth = 5;
 		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 1;
+		gbc_scrollPane.gridy = 2;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
 		listContactsModel = new DefaultListModel<>();
@@ -232,7 +282,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 		GridBagConstraints gbc_lblInfoMessages = new GridBagConstraints();
 		gbc_lblInfoMessages.anchor = GridBagConstraints.WEST;
 		gbc_lblInfoMessages.gridwidth = 2;
-		gbc_lblInfoMessages.insets = new Insets(0, 0, 5, 5);
+		gbc_lblInfoMessages.insets = new Insets(0, 0, 5, 0);
 		gbc_lblInfoMessages.gridx = 6;
 		gbc_lblInfoMessages.gridy = 12;
 		contentPane.add(lblInfoMessages, gbc_lblInfoMessages);
@@ -269,8 +319,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 		comboBoxEditAttribute = new JComboBox<>();
 		comboBoxEditAttribute.setName("comboBoxEditAttribute");
 		comboBoxEditAttribute.setEnabled(false);
-		comboBoxEditAttribute.setModel(
-				new DefaultComboBoxModel(new String[] {"Phone", "Email"}));
+		comboBoxEditAttribute.setModel(new DefaultComboBoxModel(new String[] { "Phone", "Email" }));
 		GridBagConstraints gbc_comboBoxEditAttribute = new GridBagConstraints();
 		gbc_comboBoxEditAttribute.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBoxEditAttribute.fill = GridBagConstraints.HORIZONTAL;
@@ -352,12 +401,19 @@ public class ContactSwingView extends JFrame implements ContactView {
 
 	@Override
 	public void contactEdited(Contact contact) {
-		int contactIdx = IntStream.range(0, listContactsModel.size())
-				.filter(c -> listContactsModel.get(c).getId() == contact.getId()).findFirst().getAsInt();
+		OptionalInt contactIdx = contactExistsInModel(contact);
+		if (contactIdx.isPresent()) {
+			listContactsModel.set(contactIdx.getAsInt(), contact);
+			textFieldNewAttribute.setText("");
+			clearErrorLog();
+		}
+	}
 
-		listContactsModel.set(contactIdx, contact);
-		textFieldNewAttribute.setText("");
-		clearErrorLog();
+	private OptionalInt contactExistsInModel(Contact contact) {
+		return IntStream
+				.range(0, listContactsModel.size())
+				.filter(c -> listContactsModel.get(c).getId().equals(contact.getId()))
+				.findFirst();
 	}
 
 	@Override

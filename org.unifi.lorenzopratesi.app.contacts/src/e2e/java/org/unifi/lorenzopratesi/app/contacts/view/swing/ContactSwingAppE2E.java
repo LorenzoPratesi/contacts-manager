@@ -155,6 +155,23 @@ public class ContactSwingAppE2E extends AssertJSwingJUnitTestCase {
 		assertThat(listProducts).contains(updatedContact.toString());
 	}
 	
+	
+	@Test
+	@GUITest
+	public void testSearchWhenContactIsMatched() {
+		window.textBox("textFieldSearch").enterText("testFirstName1");
+		
+		assertThat(window.list().contents())
+				.anySatisfy(e -> assertThat(e).contains("testFirstName1", "testLastName1", "1111111111", "test1@email.com"));
+	}
+	
+	@Test
+	@GUITest
+	public void testSearchWhenContactIsNoMatched() {
+		window.textBox("textFieldSearch").enterText("testFirstName3");
+		assertThat(window.list().contents()).isEmpty();
+	}
+	
 	private void addTestContactToDatabase(Contact guest) {
 		mongoClient.getDatabase(DATABASE_NAME).withCodecRegistry(pojoCodecRegistry)
 				.getCollection(CONTACT_COLLECTION_NAME, Contact.class).insertOne(guest);

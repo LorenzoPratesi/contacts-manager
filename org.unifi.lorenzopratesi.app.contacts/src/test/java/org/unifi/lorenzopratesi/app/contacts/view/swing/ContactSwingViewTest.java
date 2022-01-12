@@ -1,6 +1,8 @@
 package org.unifi.lorenzopratesi.app.contacts.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import javax.swing.DefaultListModel;
@@ -18,6 +20,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.unifi.lorenzopratesi.app.contacts.controller.ContactController;
@@ -267,8 +271,8 @@ class ContactSwingViewTest {
 		@DisplayName("Contact Edited should edit the contact from the list and then clear the error log label - testContactEditedShouldEditTheContactFromTheListAndThenClearTheErrorLogLabel()")
 		void testContactEditedShouldEditTheContactFromTheListAndThenClearTheErrorLogLabel() {
 			// Setup.
-			Contact contactToEdit = new Contact("testFirstName1", "testLastName1", "0000000000", "test1@email.com");
-			Contact anotherContact = new Contact("testFirstName2", "testLastName2", "1111111111", "test2@email.com");
+			Contact contactToEdit = new Contact("1", "testFirstName1", "testLastName1", "0000000000", "test1@email.com");
+			Contact contactEdited = new Contact("1", "testFirstName2", "testLastName2", "1111111111", "test2@email.com");
 
 			GuiActionRunner.execute(() -> {
 				DefaultListModel<Contact> listContactsModel = contactSwingView.getListContactsModel();
@@ -276,11 +280,11 @@ class ContactSwingViewTest {
 			});
 
 			// Execute.
-			GuiActionRunner.execute(() -> contactSwingView.contactEdited(anotherContact));
+			GuiActionRunner.execute(() -> contactSwingView.contactEdited(contactEdited));
 
 			// Verify.
 			String[] contactsListContent = window.list("contactsList").contents();
-			assertThat(contactsListContent).containsExactly(anotherContact.toString());
+			assertThat(contactsListContent).containsExactly(contactEdited.toString());
 			window.label("messageLabel").requireText(" ");
 			window.textBox("newAttributeTextBox").requireText("");
 		}
@@ -371,6 +375,39 @@ class ContactSwingViewTest {
 
 			// Verify.
 			verify(contactController).updateEmail(contactToEdit, "test");
+		}
+		
+		
+		@ParameterizedTest
+		@ValueSource(strings = {"", "t", "te"})
+		@DisplayName("Search field should not delegate to controller if input string is less than 3 characters - testSearchFieldShouldNotDelegateToControllerIfInputStringIsLessThan3Characters()")
+		void testSearchFieldShouldNotDelegateToControllerIfInputStringIsLessThan3Characters(String input) {
+			// Setup.
+			Contact contact1 = new Contact("1", "testFirstName1", "testLastName1", "0000000000", "test1@email.com");
+			Contact contact2 = new Contact("2", "testFirstName2", "testLastName2", "1111111111", "test2@email.com");
+
+			// Execute.
+			GuiActionRunner.execute(() -> contactSwingView.showContacts(asList(contact1, contact2)));
+
+			// Verify.
+			window.textBox("textFieldSearch").enterText(input);
+			verify(contactController, never()).findByName(input);
+		}
+		
+		@ParameterizedTest
+		@ValueSource(strings = {"tes", "test"})
+		@DisplayName("Search field should delegate only once time to controller if input string is greather or equal than 3 characters - testSearchFieldShouldDelegateOnlyOnceTimeToControllerIfInputStringIsGratherOrEqualThan3Characters()")
+		void testSearchFieldShouldDelegateOnlyOnceTimeToControllerIfInputStringIsGratherOrEqualThan3Characters(String input) {
+			// Setup.
+			Contact contact1 = new Contact("1", "testFirstName1", "testLastName1", "0000000000", "test1@email.com");
+			Contact contact2 = new Contact("2", "testFirstName2", "testLastName2", "1111111111", "test2@email.com");
+
+			// Execute.
+			GuiActionRunner.execute(() -> contactSwingView.showContacts(asList(contact1, contact2)));
+
+			// Verify.
+			window.textBox("textFieldSearch").enterText(input);
+			verify(contactController, times(1)).findByName(input);
 		}
 
 	}
