@@ -1,6 +1,7 @@
 package org.unifi.lorenzopratesi.app.contacts.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -176,7 +177,7 @@ class ContactSwingViewTest {
 		}
 
 		@Test
-		@DisplayName("Edit Contact Button should be enabled only when a Contact is selected - testDeleteContactButtonShouldBeEnabledOnlyWhenAContactIsSelected()")
+		@DisplayName("Edit Contact Button should be enabled only when a Contact is selected and field is filled - testDeleteContactButtonShouldBeEnabledOnlyWhenAContactIsSelected()")
 		void testEditContactButtonShouldBeEnabledWhenAContactIsSelectedAndFieldIsFilledWithString() {
 			// Setup.
 			Contact contact = new Contact("1", "testFirstName", "testLastName", "0000000000", "test@email.com");
@@ -191,6 +192,25 @@ class ContactSwingViewTest {
 
 			window.textBox("newAttributeTextBox").enterText("1111111111");
 			editContactButton.requireEnabled();
+		}
+
+		@Test
+		@DisplayName("Edit Contact Button should be disabled when a Contact is not selected or field is empty - testDeleteContactButtonShouldBeEnabledOnlyWhenAContactIsSelected()")
+		void testEditContactButtonShouldBeDisableWhenAContactIsNotSelectedOrFieldIsNotFilledWithString() {
+			// Setup.
+			Contact contact = new Contact("1", "testFirstName", "testLastName", "0000000000", "test@email.com");
+
+			// Execute.
+			GuiActionRunner.execute(() -> contactSwingView.getListContactsModel().addElement(contact));
+
+			// Verify.
+			JListFixture contactsList = window.list("contactsList");
+			JButtonFixture editContactButton = window.button("editContactButton");
+			contactsList.selectItem(0);
+
+			window.textBox("newAttributeTextBox").enterText("test");
+			window.textBox("newAttributeTextBox").deleteText();
+			editContactButton.requireDisabled();
 		}
 
 		private void resetTextBoxFields(JTextComponentFixture... textBoxFields) {
@@ -273,8 +293,10 @@ class ContactSwingViewTest {
 		@DisplayName("Contact Edited should edit the contact from the list and then clear the error log label - testContactEditedShouldEditTheContactFromTheListAndThenClearTheErrorLogLabel()")
 		void testContactEditedShouldEditTheContactFromTheListAndThenClearTheErrorLogLabel() {
 			// Setup.
-			Contact contactToEdit = new Contact("1", "testFirstName1", "testLastName1", "0000000000", "test1@email.com");
-			Contact contactEdited = new Contact("1", "testFirstName2", "testLastName2", "1111111111", "test2@email.com");
+			Contact contactToEdit = new Contact("1", "testFirstName1", "testLastName1", "0000000000",
+					"test1@email.com");
+			Contact contactEdited = new Contact("1", "testFirstName2", "testLastName2", "1111111111",
+					"test2@email.com");
 
 			GuiActionRunner.execute(() -> {
 				DefaultListModel<Contact> listContactsModel = contactSwingView.getListContactsModel();
@@ -289,6 +311,29 @@ class ContactSwingViewTest {
 			assertThat(contactsListContent).containsExactly(contactEdited.toString());
 			window.label("messageLabel").requireText(" ");
 			window.textBox("newAttributeTextBox").requireText("");
+		}
+
+		@Test
+		@DisplayName("Contact Edited should throw an exception if contact index was not found in list - testContactEditedShouldThrowAnExceptionIfContactIndexWasNotFoundInList()")
+		void testContactEditedShouldThrowAnExceptionIfContactIndexWasNotFoundInList() {
+			// Setup.
+			Contact contactToEdit = new Contact("1", "testFirstName1", "testLastName1", "0000000000",
+					"test1@email.com");
+			Contact contactEdited = new Contact("2", "testFirstName2", "testLastName2", "1111111111",
+					"test2@email.com");
+
+			GuiActionRunner.execute(() -> {
+				DefaultListModel<Contact> listContactsModel = contactSwingView.getListContactsModel();
+				listContactsModel.addElement(contactToEdit);
+			});
+
+			// Execute.
+			IndexOutOfBoundsException e = assertThrows(IndexOutOfBoundsException.class, () -> {
+				contactSwingView.contactEdited(contactEdited);
+			});
+
+			// Verify.
+			assertThat(e.getMessage()).isEqualTo(String.format("Internal error: %s not found.", contactEdited));
 		}
 
 	}
@@ -378,10 +423,9 @@ class ContactSwingViewTest {
 			// Verify.
 			verify(contactController).updateEmail(contactToEdit, "test");
 		}
-		
-		
+
 		@ParameterizedTest
-		@ValueSource(strings = {"", "t", "te"})
+		@ValueSource(strings = { "", "t", "te" })
 		@DisplayName("Search field should not delegate to controller if input string is less than 3 characters - testSearchFieldShouldNotDelegateToControllerIfInputStringIsLessThan3Characters()")
 		void testSearchFieldShouldNotDelegateToControllerIfInputStringIsLessThan3Characters(String input) {
 			// Setup.
@@ -395,11 +439,12 @@ class ContactSwingViewTest {
 			window.textBox("textFieldSearch").enterText(input);
 			verify(contactController, never()).findByName(input);
 		}
-		
+
 		@ParameterizedTest
-		@ValueSource(strings = {"tes", "test"})
+		@ValueSource(strings = { "tes", "test" })
 		@DisplayName("Search field should delegate only once time to controller if input string is greather or equal than 3 characters - testSearchFieldShouldDelegateOnlyOnceTimeToControllerIfInputStringIsGratherOrEqualThan3Characters()")
-		void testSearchFieldShouldDelegateOnlyOnceTimeToControllerIfInputStringIsGratherOrEqualThan3Characters(String input) {
+		void testSearchFieldShouldDelegateOnlyOnceTimeToControllerIfInputStringIsGratherOrEqualThan3Characters(
+				String input) {
 			// Setup.
 			Contact contact1 = new Contact("1", "testFirstName1", "testLastName1", "0000000000", "test1@email.com");
 			Contact contact2 = new Contact("2", "testFirstName2", "testLastName2", "1111111111", "test2@email.com");
@@ -411,7 +456,7 @@ class ContactSwingViewTest {
 			window.textBox("textFieldSearch").enterText(input);
 			verify(contactController, times(1)).findByName(input);
 		}
-		
+
 		@Test
 		@DisplayName("Search field should delegate to controller even on remove update listener if input string is greather or equal than 3 characters - testSearchFieldShouldDelegateToControllerEvenOnRemoveUpdateListenerIfInputStringIsGreatherOrEqualThan3Characters()")
 		void testSearchFieldShouldDelegateToControllerEvenOnRemoveUpdateListenerIfInputStringIsGreatherOrEqualThan3Characters() {

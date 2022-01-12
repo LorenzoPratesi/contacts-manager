@@ -24,8 +24,6 @@ import javax.swing.JScrollPane;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Font;
@@ -122,22 +120,12 @@ public class ContactSwingView extends JFrame implements ContactView {
 		contentPane.add(textFieldSearch, gbc_textFieldSearch);
 		textFieldSearch.setColumns(10);
 
-		textFieldSearch.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-
+		textFieldSearch.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				filter();
+				 filter();
 			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-
-			}
-
+			
 			private void filter() {
 				String filter = textFieldSearch.getText();
 				if (filter.length() >= 3) {
@@ -356,18 +344,22 @@ public class ContactSwingView extends JFrame implements ContactView {
 		KeyAdapter editProductButtonEnabler = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				btnEditAttribute.setEnabled(
-						listContacts.getSelectedIndex() != -1 && !textFieldNewAttribute.getText().isEmpty());
+				btnEditAttribute.setEnabled(!textFieldNewAttribute.getText().isEmpty());
 			}
 		};
 		textFieldNewAttribute.addKeyListener(editProductButtonEnabler);
 
 		btnEditAttribute.addActionListener(e -> {
-			if (comboBoxEditAttribute.getSelectedItem() == "Phone") {
-				contactController.updatePhone(listContacts.getSelectedValue(), textFieldNewAttribute.getText());
-			} else if (comboBoxEditAttribute.getSelectedItem() == "Email") {
-				contactController.updateEmail(listContacts.getSelectedValue(), textFieldNewAttribute.getText());
-			}
+			String selectedItem = (String) comboBoxEditAttribute.getSelectedItem();
+            switch (selectedItem) {
+                case "Phone":
+                    contactController.updatePhone(listContacts.getSelectedValue(), textFieldNewAttribute.getText());
+                    break;
+					
+                case "Email":
+                    contactController.updateEmail(listContacts.getSelectedValue(), textFieldNewAttribute.getText());
+                    break;
+            }
 		});
 	}
 
@@ -402,6 +394,8 @@ public class ContactSwingView extends JFrame implements ContactView {
 			listContactsModel.set(contactIdx.getAsInt(), contact);
 			textFieldNewAttribute.setText("");
 			clearErrorLog();
+		} else {
+			throw new IndexOutOfBoundsException(String.format("Internal error: %s not found.", contact));
 		}
 	}
 
