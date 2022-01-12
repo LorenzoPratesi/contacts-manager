@@ -24,7 +24,7 @@ import com.mongodb.client.model.Filters;
 
 public class ContactMongoRepository implements ContactRepository {
 
-	private MongoCollection<Contact> contactCollection;
+	private final MongoCollection<Contact> contactCollection;
 
 	public ContactMongoRepository(MongoClient client, String databaseName, String collectionName) {
 		CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),

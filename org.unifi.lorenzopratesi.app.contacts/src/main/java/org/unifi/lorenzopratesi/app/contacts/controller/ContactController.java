@@ -7,9 +7,9 @@ import org.unifi.lorenzopratesi.app.contacts.view.ContactView;
 
 public class ContactController {
 
-	private ContactView contactView;
-	private ContactRepository contactRepository;
-	private InputValidation inputValidation;
+	private final ContactView contactView;
+	private final ContactRepository contactRepository;
+	private final InputValidation inputValidation;
 
 	public ContactController(ContactRepository contactRepository, ContactView contactView,
 			InputValidation inputValidation) {

@@ -141,13 +141,9 @@ public class ContactSwingView extends JFrame implements ContactView {
 			private void filter() {
 				String filter = textFieldSearch.getText();
 				if (filter.length() >= 3) {
-					filterModel((DefaultListModel<Contact>) listContactsModel, filter);
+					listContactsModel.clear();
+					contactController.findByName(filter);
 				}
-			}
-
-			private void filterModel(DefaultListModel<Contact> model, String filter) {
-				listContactsModel.clear();
-				contactController.findByName(filter);
 			}
 		});
 
@@ -361,7 +357,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				btnEditAttribute
-						.setEnabled(listContacts.getSelectedIndex() != -1 && textFieldNewAttribute.getText() != "");
+						.setEnabled(listContacts.getSelectedIndex() != -1 && !textFieldNewAttribute.getText().isEmpty());
 			}
 		};
 		textFieldNewAttribute.addKeyListener(editProductButtonEnabler);
