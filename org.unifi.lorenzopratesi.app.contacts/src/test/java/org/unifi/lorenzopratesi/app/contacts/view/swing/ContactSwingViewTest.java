@@ -175,7 +175,7 @@ class ContactSwingViewTest {
 
 		@Test
 		@DisplayName("Edit Contact Button should be enabled only when a Contact is selected - testDeleteContactButtonShouldBeEnabledOnlyWhenAContactIsSelected()")
-		public void testEditContactButtonShouldBeEnabledWhenAContactIsSelectedAndFieldIsFilledWithString() {
+		void testEditContactButtonShouldBeEnabledWhenAContactIsSelectedAndFieldIsFilledWithString() {
 			// Setup.
 			Contact contact = new Contact("1", "testFirstName", "testLastName", "0000000000", "test@email.com");
 
