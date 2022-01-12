@@ -350,16 +350,14 @@ public class ContactSwingView extends JFrame implements ContactView {
 		textFieldNewAttribute.addKeyListener(editProductButtonEnabler);
 
 		btnEditAttribute.addActionListener(e -> {
-			String selectedItem = (String) comboBoxEditAttribute.getSelectedItem();
-            switch (selectedItem) {
-                case "Phone":
-                    contactController.updatePhone(listContacts.getSelectedValue(), textFieldNewAttribute.getText());
-                    break;
-					
-                case "Email":
-                    contactController.updateEmail(listContacts.getSelectedValue(), textFieldNewAttribute.getText());
-                    break;
-            }
+			Object selectedItem = comboBoxEditAttribute.getSelectedItem();
+			if (selectedItem == "Phone") {
+				contactController.updatePhone(listContacts.getSelectedValue(), textFieldNewAttribute.getText());
+			} 
+			
+			if (selectedItem == "Email") {
+				contactController.updateEmail(listContacts.getSelectedValue(), textFieldNewAttribute.getText());
+			}
 		});
 	}
 
