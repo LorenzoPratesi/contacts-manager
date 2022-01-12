@@ -5,6 +5,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.awt.event.KeyEvent;
+
 import javax.swing.DefaultListModel;
 
 import static java.util.Arrays.*;
@@ -187,7 +189,7 @@ class ContactSwingViewTest {
 			JButtonFixture editContactButton = window.button("editContactButton");
 			contactsList.selectItem(0);
 
-			window.textBox("newAttributeTextBox").enterText("testNewFirstName");
+			window.textBox("newAttributeTextBox").enterText("1111111111");
 			editContactButton.requireEnabled();
 		}
 
@@ -408,6 +410,22 @@ class ContactSwingViewTest {
 			// Verify.
 			window.textBox("textFieldSearch").enterText(input);
 			verify(contactController, times(1)).findByName(input);
+		}
+		
+		@Test
+		@DisplayName("Search field should delegate to controller even on remove update listener if input string is greather or equal than 3 characters - testSearchFieldShouldDelegateToControllerEvenOnRemoveUpdateListenerIfInputStringIsGreatherOrEqualThan3Characters()")
+		void testSearchFieldShouldDelegateToControllerEvenOnRemoveUpdateListenerIfInputStringIsGreatherOrEqualThan3Characters() {
+			// Setup.
+			Contact contact1 = new Contact("1", "testFirstName1", "testLastName1", "0000000000", "test1@email.com");
+			Contact contact2 = new Contact("2", "testFirstName2", "testLastName2", "1111111111", "test2@email.com");
+
+			// Execute.
+			GuiActionRunner.execute(() -> contactSwingView.showContacts(asList(contact1, contact2)));
+
+			// Verify.
+			window.textBox("textFieldSearch").enterText("test");
+			window.textBox("textFieldSearch").robot().pressAndReleaseKey(KeyEvent.VK_BACK_SPACE);
+			verify(contactController, times(2)).findByName("tes");
 		}
 
 	}

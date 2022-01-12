@@ -7,9 +7,6 @@ import java.util.stream.IntStream;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import org.unifi.lorenzopratesi.app.contacts.controller.ContactController;
 import org.unifi.lorenzopratesi.app.contacts.model.Contact;
 import org.unifi.lorenzopratesi.app.contacts.view.ContactView;
@@ -24,8 +21,11 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Font;
@@ -122,20 +122,20 @@ public class ContactSwingView extends JFrame implements ContactView {
 		contentPane.add(textFieldSearch, gbc_textFieldSearch);
 		textFieldSearch.setColumns(10);
 
-		textFieldSearch.getDocument().addDocumentListener(new DocumentListener() {
+		textFieldSearch.addKeyListener(new KeyListener() {
+
 			@Override
-			public void insertUpdate(DocumentEvent e) {
+			public void keyTyped(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
 				filter();
 			}
 
 			@Override
-			public void removeUpdate(DocumentEvent e) {
-				filter();
-			}
+			public void keyPressed(KeyEvent e) {
 
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				filter();
 			}
 
 			private void filter() {
@@ -356,8 +356,8 @@ public class ContactSwingView extends JFrame implements ContactView {
 		KeyAdapter editProductButtonEnabler = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				btnEditAttribute
-						.setEnabled(listContacts.getSelectedIndex() != -1 && !textFieldNewAttribute.getText().isEmpty());
+				btnEditAttribute.setEnabled(
+						listContacts.getSelectedIndex() != -1 && !textFieldNewAttribute.getText().isEmpty());
 			}
 		};
 		textFieldNewAttribute.addKeyListener(editProductButtonEnabler);
@@ -406,10 +406,8 @@ public class ContactSwingView extends JFrame implements ContactView {
 	}
 
 	private OptionalInt contactExistsInModel(Contact contact) {
-		return IntStream
-				.range(0, listContactsModel.size())
-				.filter(c -> listContactsModel.get(c).getId().equals(contact.getId()))
-				.findFirst();
+		return IntStream.range(0, listContactsModel.size())
+				.filter(c -> listContactsModel.get(c).getId().equals(contact.getId())).findFirst();
 	}
 
 	@Override
