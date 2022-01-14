@@ -16,13 +16,14 @@
 
 		<!-- dependencies versions -->
 		<junit.version>5.7.0</junit.version>
+		<assertj.swing.version>3.17.1</assertj.swing.version>
 		<mockito.version>3.12.4</mockito.version>
 		<pitest.version>1.5.2</pitest.version>
 		<mongo.driver.version>3.12.10</mongo.driver.version>
 		<mongo.java.server.version>1.37.0</mongo.java.server.version>
 		<slf4f.version>1.7.21</slf4f.version>
 		<testcontainers.version>1.15.1</testcontainers.version>
-		<picocli.version>3.9.6</picocli.version>
+		<picocli.version>4.6.1</picocli.version>
 		<maven.surfire.plugin.version>2.22.2</maven.surfire.plugin.version>
 		<failsafe.version>2.22.2</failsafe.version>
 
@@ -74,18 +75,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.13.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.13.0</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
 			<version>${junit.version}</version>
@@ -110,14 +99,14 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
-			<version>5.7.0</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-swing-junit</artifactId>
-			<version>3.17.1</version>
+			<version>${assertj.swing.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -190,7 +179,7 @@
 		<dependency>
 			<groupId>info.picocli</groupId>
 			<artifactId>picocli</artifactId>
-			<version>4.6.1</version>
+			<version>${picocli.version}</version>
 		</dependency>
 
 		<dependency>
