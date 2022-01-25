@@ -15,7 +15,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		
+
 		<!-- dependencies versions -->
 		<junit.version>5.7.0</junit.version>
 		<assertj.swing.version>3.17.1</assertj.swing.version>
@@ -439,6 +439,34 @@
 				</plugins>
 			</build>
 		</profile>
+
+		<profile>
+			<id>skip-testcontainers</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>**/*Testcontainers*.java</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<id>e2e-tests</id>
+								<configuration>
+									<excludes>
+										<exclude>**/*E2E.java</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		˙
 
 	</profiles>
 </project>
