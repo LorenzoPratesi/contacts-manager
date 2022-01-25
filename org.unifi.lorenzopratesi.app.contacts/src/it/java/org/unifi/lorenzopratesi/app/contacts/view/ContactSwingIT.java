@@ -141,7 +141,7 @@ class ContactSwingIT {
 
 		@Test
 		@DisplayName("Edit contact button should change phone if selected - testEditContactButtonWhenPhoneIsSelectedShouldChangeContactPhoneInTheList()")
-		public void testEditContactButtonWhenPhoneIsSelectedShouldChangeContactPhoneInTheList() {
+		void testEditContactButtonWhenPhoneIsSelectedShouldChangeContactPhoneInTheList() {
 			Contact contactToEdit = new Contact("testFirstName", "testLastName", "0000000000", "test@email.com");
 			GuiActionRunner.execute(() -> contactController.newContact(contactToEdit));
 
@@ -157,7 +157,7 @@ class ContactSwingIT {
 
 		@Test
 		@DisplayName("Edit contact button should change email if selected - testEditContactButtonWhenEmailIsSelectedShouldChangeContactEmailInTheList()")
-		public void testEditContactButtonWhenEmailIsSelectedShouldChangeContactEmailInTheList() {
+		void testEditContactButtonWhenEmailIsSelectedShouldChangeContactEmailInTheList() {
 			Contact contactToEdit = new Contact("testFirstName", "testLastName", "0000000000", "test@email.com");
 			GuiActionRunner.execute(() -> contactController.newContact(contactToEdit));
 
@@ -175,7 +175,7 @@ class ContactSwingIT {
 
 		@Test
 		@DisplayName("Edit contact button should show error when contact does not exist in the database - testEditContactButtonWhenContactDoesNotExistInTheDatabase()")
-		public void testEditContactButtonWhenContactDoesNotExistInTheDatabase() {
+		void testEditContactButtonWhenContactDoesNotExistInTheDatabase() {
 			Contact contactToEdit = new Contact("testFirstName", "testLastName", "0000000000", "test@email.com");
 			GuiActionRunner.execute(() -> contactSwingView.getListContactsModel().addElement(contactToEdit));
 
@@ -186,12 +186,13 @@ class ContactSwingIT {
 			window.button("editContactButton").click();
 			window.label("messageLabel").requireText(String.format("There is no contact with id %s, %s, %s",
 					contactToEdit.getId(), contactToEdit.getFirstName(), contactToEdit.getLastName()));
+			assertThat(window.list("contactsList").contents()).containsExactly(contactToEdit.toString());
 		}
 		
 
 		@Test
 		@DisplayName("Search field should display zero contacts if no matches in database - testSearchFieldShouldDisplayZeroContactsIfNoMatchesInDatabase()")
-		public void testSearchFieldShouldDisplayZeroContactsIfNoMatchesInDatabase() {
+		void testSearchFieldShouldDisplayZeroContactsIfNoMatchesInDatabase() {
 			// Setup.
 			Contact contact1 = new Contact("testFirstName1", "testLastName1", "0000000000", "test1@email.com");
 			Contact contact2 = new Contact("testFirstName2", "testLastName2", "1111111111", "test2@email.com");
@@ -209,7 +210,7 @@ class ContactSwingIT {
 
 		@Test
 		@DisplayName("Search field should display filtered contacts if matches in database - testSearchFieldShouldDisplayFilteredContactsIfMatchesInDatabase()")
-		public void testSearchFieldShouldDisplayFilteredContactsIfMatchesInDatabase() {
+		void testSearchFieldShouldDisplayFilteredContactsIfMatchesInDatabase() {
 			// Setup.
 			Contact contact1 = new Contact("testFirstName1", "testLastName1", "0000000000", "test1@email.com");
 			Contact contact2 = new Contact("testFirstName2", "testLastName2", "1111111111", "test2@email.com");

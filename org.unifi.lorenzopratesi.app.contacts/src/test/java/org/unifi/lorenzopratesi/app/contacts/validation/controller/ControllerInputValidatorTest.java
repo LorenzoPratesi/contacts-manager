@@ -36,7 +36,7 @@ class ControllerInputValidatorTest {
 			String phoneGraterThan15 = "11111111111111111";
 			String phoneLenght15 = "111111111111111";
 			assertThat(phoneGraterThan15.length()).isGreaterThan(15);
-			assertThat(phoneLenght15.length()).isEqualTo(15);
+			assertThat(phoneLenght15).hasSize(15);
 			assertThat(validator.validatePhone(phoneGraterThan15)).isFalse();
 			assertThat(validator.validatePhone(phoneLenght15)).isTrue();
 		}
