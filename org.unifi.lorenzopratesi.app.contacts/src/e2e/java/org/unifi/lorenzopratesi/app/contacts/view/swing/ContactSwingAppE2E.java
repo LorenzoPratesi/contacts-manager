@@ -27,7 +27,7 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.model.Filters;
 
 @RunWith(GUITestRunner.class)
-public class ContactSwingAppE2E extends AssertJSwingJUnitTestCase {
+public class ContactSwingAppE2E extends AssertJSwingJUnitTestCase { // NOSONAR (doesn't match regular expression for testcase's name)
 
 	private static final String MONGO_CLIENT_HOST = "localhost";
 	private static final String DATABASE_NAME = "contacthouse";
