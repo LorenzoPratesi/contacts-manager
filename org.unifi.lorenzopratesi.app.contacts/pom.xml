@@ -13,7 +13,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		
 		<!-- dependencies versions -->
 		<junit.version>5.7.0</junit.version>
 		<assertj.swing.version>3.17.1</assertj.swing.version>
@@ -141,6 +143,7 @@
 			<groupId>de.bwaldvogel</groupId>
 			<artifactId>mongo-java-server</artifactId>
 			<version>${mongo.java.server.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -196,184 +199,179 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>3.0.0</version>
-					<executions>
-						<execution>
-							<id>add-test-source</id>
-							<phase>generate-test-sources</phase>
-							<goals>
-								<goal>add-test-source</goal>
-							</goals>
-							<configuration>
-								<sources>
-									<source>src/it/java</source>
-									<source>src/e2e/java</source>
-								</sources>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
-					</configuration>
-				</plugin>
-
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${maven.surfire.plugin.version}</version>
 				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>${failsafe.version}</version>
-
-					<executions>
-						<execution>
-							<id>it-tests</id>
-							<goals>
-								<goal>integration-test</goal>
-								<goal>verify</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>e2e-tests</id>
-							<goals>
-								<goal>integration-test</goal>
-								<goal>verify</goal>
-							</goals>
-							<configuration>
-								<excludes>
-									<exclude>**/*IT.java</exclude>
-								</excludes>
-								<includes>
-									<include>**/*E2E.java</include>
-								</includes>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-
-
-				<plugin>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.9.1</version>
-				</plugin>
-
-
-				<plugin>
-					<groupId>org.pitest</groupId>
-					<artifactId>pitest-maven</artifactId>
-					<version>${pitest.version}</version>
-					<dependencies>
-						<dependency>
-							<groupId>org.pitest</groupId>
-							<artifactId>pitest-junit5-plugin</artifactId>
-							<version>0.12</version>
-						</dependency>
-					</dependencies>
-					<configuration>
-						<targetClasses>
-							<param>org.unifi.lorenzopratesi.app.contacts.controller.*</param>
-							<param>org.unifi.lorenzopratesi.app.contacts.repository.*</param>
-						</targetClasses>
-						<targetTests>
-							<param>org.unifi.lorenzopratesi.app.contacts.controller*</param>
-							<param>org.unifi.lorenzopratesi.app.contacts.repository.*</param>
-						</targetTests>
-						<mutators>
-							<mutator>DEFAULTS</mutator>
-						</mutators>
-						<mutationThreshold>100</mutationThreshold>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.6</version>
-					<configuration>
-						<excludes>
-							<exclude>**/model/*.*</exclude>
-							<exclude>**/app/swing/ContactSwingApp.*</exclude>
-						</excludes>
-					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>prepare-agent</goal>
-								<goal>report</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
-
-				<plugin>
-					<groupId>org.eluder.coveralls</groupId>
-					<artifactId>coveralls-maven-plugin</artifactId>
-					<version>4.3.0</version>
-
-					<dependencies>
-						<!-- This is required when using JDK 9 or higher since javax.xml.bind 
-							has been removed from the JDK -->
-						<dependency>
-							<groupId>javax.xml.bind</groupId>
-							<artifactId>jaxb-api</artifactId>
-							<version>2.3.1</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-
-				<plugin>
-					<groupId>org.sonarsource.scanner.maven</groupId>
-					<artifactId>sonar-maven-plugin</artifactId>
-					<version>3.9.1.2184</version>
-				</plugin>
-
-
-				<plugin>
-					<groupId>io.fabric8</groupId>
-					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.34.1</version>
-					<configuration>
-						<images>
-							<image>
-								<name>mongo:4.4.3</name>
-								<run>
-									<ports>
-										<port>mongo.mapped.port:27017</port>
-									</ports>
-								</run>
-							</image>
-						</images>
-					</configuration>
-					<executions>
-						<execution>
-							<id>docker-start</id>
-							<phase>pre-integration-test</phase>
-							<goals>
-								<goal>start</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>docker-stop</id>
-							<phase>post-integration-test</phase>
-							<goals>
-								<goal>stop</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
 			</plugins>
+
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+								<source>src/e2e/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${failsafe.version}</version>
+				<configuration>
+					<systemPropertyVariables>
+						<mongo.port>${mongo.mapped.port}</mongo.port>
+					</systemPropertyVariables>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>it-tests</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>e2e-tests</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>**/*IT.java</exclude>
+							</excludes>
+							<includes>
+								<include>**/*E2E.java</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>${pitest.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>0.12</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<targetClasses>
+						<param>org.unifi.lorenzopratesi.app.contacts.controller.*</param>
+						<param>org.unifi.lorenzopratesi.app.contacts.repository.*</param>
+						<param>org.unifi.lorenzopratesi.app.contacts.validation.*</param>
+					</targetClasses>
+					<targetTests>
+						<param>org.unifi.lorenzopratesi.app.contacts.controller*</param>
+						<param>org.unifi.lorenzopratesi.app.contacts.repository.*</param>
+						<param>org.unifi.lorenzopratesi.app.contacts.validation.*</param>
+					</targetTests>
+					<mutators>
+						<mutator>DEFAULTS</mutator>
+					</mutators>
+					<mutationThreshold>100</mutationThreshold>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.6</version>
+				<configuration>
+					<excludes>
+						<exclude>**/model/*.*</exclude>
+						<exclude>**/app/swing/ContactSwingApp.*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>4.3.0</version>
+
+				<dependencies>
+					<!-- This is required when using JDK 9 or higher since javax.xml.bind 
+						has been removed from the JDK -->
+					<dependency>
+						<groupId>javax.xml.bind</groupId>
+						<artifactId>jaxb-api</artifactId>
+						<version>2.3.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.9.1.2184</version>
+			</plugin>
+
+
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.34.1</version>
+				<configuration>
+					<images>
+						<image>
+							<name>mongo:4.4.3</name>
+							<run>
+								<ports>
+									<port>mongo.mapped.port:27017</port>
+								</ports>
+							</run>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>docker-start</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>docker-stop</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
 	</build>
 
 	<profiles>

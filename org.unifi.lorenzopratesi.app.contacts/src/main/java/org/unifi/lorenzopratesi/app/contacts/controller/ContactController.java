@@ -70,8 +70,8 @@ public class ContactController {
 			return;
 		}
 
-		contactRepository.updatePhone(contact.getId(), phone);
 		contact.setPhone(phone);
+		contactRepository.updatePhone(contact.getId(), contact.getPhone());
 		contactView.contactEdited(contact);
 		contactView.showMessage("Contact phone changed");
 	}
@@ -87,8 +87,8 @@ public class ContactController {
 			return;
 		}
 
-		contactRepository.updateEmail(contact.getId(), email);
 		contact.setEmail(email);
+		contactRepository.updateEmail(contact.getId(), contact.getEmail());
 		contactView.contactEdited(contact);
 		contactView.showMessage("Contact email changed");
 	}

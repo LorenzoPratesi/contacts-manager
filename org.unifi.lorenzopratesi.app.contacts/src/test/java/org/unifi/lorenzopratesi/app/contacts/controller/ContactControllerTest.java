@@ -193,10 +193,10 @@ class ContactControllerTest {
 	void testUpdateContactEmailWhenContactExistAndEmailIsValid() {
 		Contact contactToUpdate = new Contact("1", "testFirstName", "testLastName", "0000000000", "test@email.com");
 		when(contactRepository.findById(contactToUpdate.getId())).thenReturn(contactToUpdate);
-		when(inputValidation.validatePhone("0000000000")).thenReturn(true);
 		when(inputValidation.validateEmail("newtest@email.com")).thenReturn(true);
 
 		contactController.updateEmail(contactToUpdate, "newtest@email.com");
+		
 		Contact updatedContact = new Contact("1", "testFirstName", "testLastName", "0000000000", "newtest@email.com");
 		InOrder inOrder = inOrder(contactRepository, contactView, contactView);
 		inOrder.verify(contactRepository).updateEmail(contactToUpdate.getId(), "newtest@email.com");
