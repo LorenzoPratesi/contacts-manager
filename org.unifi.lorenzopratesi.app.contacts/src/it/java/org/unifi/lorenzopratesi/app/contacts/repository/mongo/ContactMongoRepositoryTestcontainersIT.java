@@ -28,7 +28,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 @Testcontainers
-class ContactMongoRepositoryIT {
+class ContactMongoRepositoryTestcontainersIT {
 	
 	private static final String DATABASE_NAME = "contact-manager";
 	private static final String COLLECTION_NAME = "contact";
