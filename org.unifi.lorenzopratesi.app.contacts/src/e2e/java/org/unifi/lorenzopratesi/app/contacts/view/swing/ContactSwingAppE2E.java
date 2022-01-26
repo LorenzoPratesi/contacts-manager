@@ -172,9 +172,9 @@ public class ContactSwingAppE2E extends AssertJSwingJUnitTestCase { // NOSONAR (
 		assertThat(window.list().contents()).isEmpty();
 	}
 	
-	private void addTestContactToDatabase(Contact guest) {
+	private void addTestContactToDatabase(Contact contact) {
 		mongoClient.getDatabase(DATABASE_NAME).withCodecRegistry(pojoCodecRegistry)
-				.getCollection(CONTACT_COLLECTION_NAME, Contact.class).insertOne(guest);
+				.getCollection(CONTACT_COLLECTION_NAME, Contact.class).insertOne(contact);
 	}
 
 	private void removeTestContactFromDatabase(String id) {

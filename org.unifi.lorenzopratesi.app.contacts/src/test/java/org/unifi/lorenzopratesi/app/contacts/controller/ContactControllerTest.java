@@ -146,7 +146,7 @@ class ContactControllerTest {
 	}
 
 	@Test
-	void testDeleteGuestWhenGuestNotExist() {
+	void testDeleteContactWhenContactNotExist() {
 		Contact contactNotPresent = new Contact("1", "testFirstName", "testLastName", "0000000000", "test@email.com");
 		when(contactRepository.findById(contactNotPresent.getId())).thenReturn(null);
 		contactController.deleteContact(contactNotPresent);

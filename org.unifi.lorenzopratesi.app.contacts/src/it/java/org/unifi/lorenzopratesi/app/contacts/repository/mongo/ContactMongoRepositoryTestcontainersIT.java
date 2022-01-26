@@ -68,10 +68,10 @@ class ContactMongoRepositoryTestcontainersIT {
 	
 	@Test
 	void testSave() {
-		Contact guestToSave = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
-		contactMongoRepository.save(guestToSave);
+		Contact contactToSave = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
+		contactMongoRepository.save(contactToSave);
 		assertThat(getContactsList()).containsExactly(
-				new Contact(guestToSave.getId(), "testFirstName1", "testLastName1", "1111111111", "test1@email.com"));
+				new Contact(contactToSave.getId(), "testFirstName1", "testLastName1", "1111111111", "test1@email.com"));
 	}
 
 	@Test
