@@ -424,10 +424,9 @@ class ContactSwingViewTest {
 			verify(contactController).updateEmail(contactToEdit, "test");
 		}
 
-		@ParameterizedTest
-		@ValueSource(strings = { "", "t", "te" })
-		@DisplayName("Search field should not delegate to controller if input string is less than 3 characters - testSearchFieldShouldNotDelegateToControllerIfInputStringIsLessThan3Characters()")
-		void testSearchFieldShouldNotDelegateToControllerIfInputStringIsLessThan3Characters(String input) {
+		@Test
+		@DisplayName("Search field should not delegate to controller if input string is empty - testSearchFieldShouldNotDelegateToControllerIfInputStringIsEmpty()")
+		void testSearchFieldShouldNotDelegateToControllerIfInputStringIsEmpty() {
 			// Setup.
 			Contact contact1 = new Contact("1", "testFirstName1", "testLastName1", "0000000000", "test1@email.com");
 			Contact contact2 = new Contact("2", "testFirstName2", "testLastName2", "1111111111", "test2@email.com");
@@ -436,8 +435,9 @@ class ContactSwingViewTest {
 			GuiActionRunner.execute(() -> contactSwingView.showContacts(asList(contact1, contact2)));
 
 			// Verify.
-			window.textBox("textFieldSearch").enterText(input);
-			verify(contactController, never()).findByName(input);
+			window.textBox("textFieldSearch").enterText("");
+			window.textBox("textFieldSearch").requireEmpty();
+			verify(contactController, never()).findByName("");
 		}
 
 		@ParameterizedTest

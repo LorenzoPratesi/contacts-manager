@@ -121,17 +121,15 @@ public class ContactSwingView extends JFrame implements ContactView {
 		textFieldSearch.setColumns(10);
 
 		textFieldSearch.addKeyListener(new KeyAdapter() {
+
 			@Override
 			public void keyReleased(KeyEvent e) {
 				filter();
 			}
 
 			private void filter() {
-				String filter = textFieldSearch.getText();
-				if (filter.length() >= 3) {
-					listContactsModel.clear();
-					contactController.findByName(filter);
-				}
+				listContactsModel.clear();
+				contactController.findByName(textFieldSearch.getText());
 			}
 		});
 
