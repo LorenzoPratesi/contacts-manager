@@ -36,8 +36,7 @@
 			properties with eXX in the name as below -->
 		<sonar.issue.ignore.multicriteria>e11,e12,e13</sonar.issue.ignore.multicriteria>
 
-		<!-- Disable rule for "Inheritance tree of classes should not be too deep" 
-			(just an example) -->
+		<!-- Disable rule for "Inheritance tree of classes should not be too deep" -->
 		<sonar.issue.ignore.multicriteria.e11.ruleKey>
 			java:S110
 		</sonar.issue.ignore.multicriteria.e11.ruleKey>
@@ -46,13 +45,13 @@
 		</sonar.issue.ignore.multicriteria.e11.resourceKey>
 
 		<!-- Disable rule for "Local variable and method parameter names should 
-			comply with a naming convention" (just an example) -->
-		<sonar.issue.ignore.multicriteria.e12.ruleKey>
+			comply with a naming convention" -->
+		<!--<sonar.issue.ignore.multicriteria.e12.ruleKey>
 			java:S117
 		</sonar.issue.ignore.multicriteria.e12.ruleKey>
 		<sonar.issue.ignore.multicriteria.e12.resourceKey>
 			**/ContactSwingView.java
-		</sonar.issue.ignore.multicriteria.e12.resourceKey>
+		</sonar.issue.ignore.multicriteria.e12.resourceKey>-->
 
 		<!-- Disable rule for "Tests should include assertions": SonarQube is not 
 			aware of AssertJ Swing -->
@@ -395,13 +394,11 @@
 			<build>
 				<plugins>
 					<plugin>
-						<!-- configured in pluginManagement -->
 						<!-- JaCoCo report is required by coveralls-maven-plugin -->
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
 					</plugin>
 					<plugin>
-						<!-- configured in pluginManagement -->
 						<groupId>org.eluder.coveralls</groupId>
 						<artifactId>coveralls-maven-plugin</artifactId>
 						<executions>

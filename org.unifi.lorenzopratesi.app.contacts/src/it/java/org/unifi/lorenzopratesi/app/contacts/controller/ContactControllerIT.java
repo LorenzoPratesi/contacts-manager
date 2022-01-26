@@ -56,7 +56,7 @@ class ContactControllerIT {
 	}
 
 	@Test
-	void testAllGuests() {
+	void testAllContacts() {
 		Contact contact1 = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
 		Contact contact2 = new Contact("testFirstName2", "testLastName2", "2222222222", "test2@email.com");
 		contactRepository.save(contact1);
@@ -74,7 +74,7 @@ class ContactControllerIT {
 	}
 	
 	@Test
-	void testDeleteGuest() {
+	void testDeleteContact() {
 		Contact contactToDelete = new Contact(new ObjectId().toString(), "testFirstName", "testLastName",
 				"0000000000", "test@email.com");
 		contactRepository.save(contactToDelete);
