@@ -20,7 +20,13 @@
 		<junit.version>5.7.0</junit.version>
 		<assertj.swing.version>3.17.1</assertj.swing.version>
 		<mockito.version>3.12.4</mockito.version>
+		<mongodb.bson.version>4.3.1</mongodb.bson.version>
+		<logback.classic.version>1.2.3</logback.classic.version>
+		<findbugs.version>3.0.2</findbugs.version>
 		<pitest.version>1.5.2</pitest.version>
+		<jacoco.maven.plugin.version>0.8.6</jacoco.maven.plugin.version>
+		<coveralls.maven.plugin.version>4.3.0</coveralls.maven.plugin.version>
+		<io.fabric8.docker.maven.plugin.version>0.38.1</io.fabric8.docker.maven.plugin.version>
 		<mongo.driver.version>3.12.10</mongo.driver.version>
 		<mongo.java.server.version>1.37.0</mongo.java.server.version>
 		<slf4f.version>1.7.21</slf4f.version>
@@ -122,7 +128,7 @@
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>bson</artifactId>
-			<version>4.3.1</version>
+			<version>${mongodb.bson.version}</version>
 		</dependency>
 
 		<dependency>
@@ -135,7 +141,7 @@
 			<!-- required to see Mongo Java Driver logs -->
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
+			<version>${logback.classic.version}</version>
 		</dependency>
 
 		<dependency>
@@ -188,7 +194,7 @@
 			<!-- Needed to avoid a false positive from SonarQube -->
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version>
+			<version>${findbugs.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -295,7 +301,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.6</version>
+				<version>${jacoco.maven.plugin.version}</version>
 				<configuration>
 					<excludes>
 						<exclude>**/model/*.*</exclude>
@@ -316,7 +322,7 @@
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
-				<version>4.3.0</version>
+				<version>${coveralls.maven.plugin.version}</version>
 
 				<dependencies>
 					<!-- This is required when using JDK 9 or higher since javax.xml.bind 
@@ -339,7 +345,7 @@
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.38.1</version>
+				<version>${io.fabric8.docker.maven.plugin.version}</version>
 				<configuration>
 					<images>
 						<image>
