@@ -2,6 +2,8 @@
 
 [![Java CI with Maven in Linux](https://github.com/LorenzoPratesi/contacts-manager/actions/workflows/maven.yml/badge.svg)](https://github.com/LorenzoPratesi/contacts-manager/actions/workflows/maven.yml)
 [![Java CI with Maven and Docker in Windows](https://github.com/LorenzoPratesi/contacts-manager/actions/workflows/maven-windows.yml/badge.svg)](https://github.com/LorenzoPratesi/contacts-manager/actions/workflows/maven-windows.yml)
+[![Java CI with Maven and Docker in macOS](https://github.com/LorenzoPratesi/contacts-manager/actions/workflows/maven-mac.yml/badge.svg)](https://github.com/LorenzoPratesi/contacts-manager/actions/workflows/maven-mac.yml)
+
 [![Coverage Status](https://coveralls.io/repos/github/LorenzoPratesi/contacts-manager/badge.svg?branch=main)](https://coveralls.io/github/LorenzoPratesi/contacts-manager?branch=main)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LorenzoPratesi_contacts-manager&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LorenzoPratesi_contacts-manager)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=LorenzoPratesi_contacts-manager&metric=bugs)](https://sonarcloud.io/summary/new_code?id=LorenzoPratesi_contacts-manager)
