@@ -6,6 +6,9 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LorenzoPratesi_contacts-manager&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LorenzoPratesi_contacts-manager)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=LorenzoPratesi_contacts-manager&metric=bugs)](https://sonarcloud.io/summary/new_code?id=LorenzoPratesi_contacts-manager)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=LorenzoPratesi_contacts-manager&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=LorenzoPratesi_contacts-manager)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=LorenzoPratesi_contacts-manager&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=LorenzoPratesi_contacts-manager)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=LorenzoPratesi_contacts-manager&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=LorenzoPratesi_contacts-manager)
+
 
 This repository holds the project for the course Advanced Techniques and Tools for Software Development (ATTSD) Course of Data Science in the University of Florence.  
 This project resembles a skeleton of a contact managing application that can store, delete, update and search contacts from a storage or equivalent. The application is intended to be kept simple because the focus of the project was the usage of the techniques learned during the course, such as TDD, Continuous Integration, GIT, Docker, Mutation Testing and more.
