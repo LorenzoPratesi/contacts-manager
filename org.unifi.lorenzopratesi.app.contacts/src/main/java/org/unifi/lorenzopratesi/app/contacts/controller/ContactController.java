@@ -57,6 +57,7 @@ public class ContactController {
 		
 		contactRepository.delete(contact.getId());
 		contactView.contactRemoved(contact);
+		contactView.showMessage("Contact deleted");
 	}
 
 	public void updatePhone(Contact contact, String phone) {

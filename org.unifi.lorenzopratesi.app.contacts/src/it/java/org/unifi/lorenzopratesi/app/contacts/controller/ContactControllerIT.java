@@ -71,6 +71,8 @@ class ContactControllerIT {
 		contactController.newContact(new Contact("testFirstName", "testLastName", "1234567890", "test@email.com"));
 		Contact newContact = contactRepository.findAll().get(0);
 		verify(contactView).contactAdded(newContact);
+		verify(contactView).showMessage("Contact added");
+		verifyNoMoreInteractions(contactView);
 	}
 	
 	@Test
@@ -80,6 +82,7 @@ class ContactControllerIT {
 		contactRepository.save(contactToDelete);
 		contactController.deleteContact(contactToDelete);
 		verify(contactView).contactRemoved(contactToDelete);
+		verify(contactView).showMessage("Contact deleted");
 		verifyNoMoreInteractions(contactView);
 	}
 
