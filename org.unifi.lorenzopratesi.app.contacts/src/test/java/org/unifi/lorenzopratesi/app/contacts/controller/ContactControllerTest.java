@@ -143,6 +143,7 @@ class ContactControllerTest {
 		InOrder inOrder = inOrder(contactRepository, contactView);
 		inOrder.verify(contactRepository).delete(contactToDelete.getId());
 		inOrder.verify(contactView).contactRemoved(contactToDelete);
+		inOrder.verify(contactView).showMessage("Contact deleted");
 	}
 
 	@Test
