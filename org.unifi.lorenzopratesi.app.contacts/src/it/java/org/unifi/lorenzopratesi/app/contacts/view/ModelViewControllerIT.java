@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.unifi.lorenzopratesi.app.contacts.controller.ContactController;
 import org.unifi.lorenzopratesi.app.contacts.model.Contact;
@@ -18,6 +19,7 @@ import org.unifi.lorenzopratesi.app.contacts.view.swing.ContactSwingView;
 
 import com.mongodb.MongoClient;
 
+@DisplayName("Integration Tests for the MVC - it verifies the correct behavior of our MVC architecture")
 class ModelViewControllerIT {
 
 	private static final String MONGO_CLIENT_HOST = "localhost";

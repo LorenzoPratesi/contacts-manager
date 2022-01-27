@@ -15,6 +15,7 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -28,6 +29,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 @Testcontainers
+@DisplayName("Integration Tests for Contact Mongo Repository")
 class ContactMongoRepositoryTestcontainersIT {
 	
 	private static final String DATABASE_NAME = "contact-manager";
@@ -57,6 +59,7 @@ class ContactMongoRepositoryTestcontainersIT {
 	}
 	
 	@Test
+	@DisplayName("Find all contact in the collection - testFindAll()")
 	void testFindAll() {
 		Contact contact1 = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
 		Contact contact2 = new Contact("testFirstName2", "testLastName2", "2222222222", "test2@email.com");
@@ -67,6 +70,7 @@ class ContactMongoRepositoryTestcontainersIT {
 	}
 	
 	@Test
+	@DisplayName("Save a contact in the collection - testSave()")
 	void testSave() {
 		Contact contactToSave = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
 		contactMongoRepository.save(contactToSave);
@@ -75,6 +79,7 @@ class ContactMongoRepositoryTestcontainersIT {
 	}
 
 	@Test
+	@DisplayName("Find a contact in the collection with his id - testFindById()")
 	void testFindById() {
 		Contact contactToFind = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
 		Contact anotherContact = new Contact("testFirstName2", "testLastName2", "2222222222", "test2@email.com");
@@ -85,12 +90,35 @@ class ContactMongoRepositoryTestcontainersIT {
 	}
 
 	@Test
+	@DisplayName("Delete a contact in the collection with his id - testDelete()")
 	void testDelete() {
 		Contact contactToDelete = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
 		Contact anotherContact = new Contact("testFirstName2", "testLastName2", "2222222222", "test2@email.com");
 		contactCollection.insertMany(asList(contactToDelete, anotherContact));
 		contactMongoRepository.delete(contactToDelete.getId());
 		assertThat(getContactsList()).containsExactly(anotherContact);
+	}
+	
+	@Test
+	@DisplayName("Update contact phone in the collection with his id - testUpdatePhone()")
+	void testUpdatePhone() {
+		Contact contactToUpdate = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
+		contactCollection.insertMany(asList(contactToUpdate));
+		contactMongoRepository.updatePhone(contactToUpdate.getId(), "0000000000");
+
+		Contact contactUpdated = new Contact(contactToUpdate.getId(), "testFirstName1", "testLastName1", "0000000000", "test1@email.com");
+		assertThat(getContactsList()).containsExactly(contactUpdated);
+	}
+	
+	@Test
+	@DisplayName("Update contact email in the collection with his id - testUpdateEmail()")
+	void testUpdateEmail() {
+		Contact contactToUpdate = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
+		contactCollection.insertMany(asList(contactToUpdate));
+		contactMongoRepository.updateEmail(contactToUpdate.getId(), "test2@email.com");
+
+		Contact contactUpdated = new Contact(contactToUpdate.getId(), "testFirstName1", "testLastName1", "1111111111", "test2@email.com");
+		assertThat(getContactsList()).containsExactly(contactUpdated);
 	}
 
 	private List<Contact> getContactsList() {

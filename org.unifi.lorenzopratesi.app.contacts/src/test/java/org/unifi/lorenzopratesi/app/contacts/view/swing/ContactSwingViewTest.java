@@ -32,6 +32,7 @@ import org.unifi.lorenzopratesi.app.contacts.model.Contact;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("Tests for Contact Swing View")
 class ContactSwingViewTest {
 
 	private FrameFixture window;

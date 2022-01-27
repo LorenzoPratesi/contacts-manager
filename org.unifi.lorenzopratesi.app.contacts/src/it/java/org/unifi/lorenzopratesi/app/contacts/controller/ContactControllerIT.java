@@ -9,6 +9,7 @@ import static java.util.Arrays.asList;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -22,6 +23,7 @@ import org.unifi.lorenzopratesi.app.contacts.view.ContactView;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
+@DisplayName("Integration Tests for Contact Controller")
 class ContactControllerIT {
 	
 	private static final String DATABASE_NAME = "contact-manager";
@@ -56,6 +58,7 @@ class ContactControllerIT {
 	}
 
 	@Test
+	@DisplayName("All contacts list request - testAllContacts()")
 	void testAllContacts() {
 		Contact contact1 = new Contact("testFirstName1", "testLastName1", "1111111111", "test1@email.com");
 		Contact contact2 = new Contact("testFirstName2", "testLastName2", "2222222222", "test2@email.com");
@@ -67,6 +70,7 @@ class ContactControllerIT {
 	}
 	
 	@Test
+	@DisplayName("New contact request - testNewContact()")
 	void testNewContact() {
 		contactController.newContact(new Contact("testFirstName", "testLastName", "1234567890", "test@email.com"));
 		Contact newContact = contactRepository.findAll().get(0);
@@ -76,6 +80,7 @@ class ContactControllerIT {
 	}
 	
 	@Test
+	@DisplayName("Delete contact request - testDeleteContact()")
 	void testDeleteContact() {
 		Contact contactToDelete = new Contact(new ObjectId().toString(), "testFirstName", "testLastName",
 				"0000000000", "test@email.com");
@@ -85,6 +90,30 @@ class ContactControllerIT {
 		verify(contactView).showMessage("Contact deleted");
 		verifyNoMoreInteractions(contactView);
 	}
-
-
+	
+	@Test
+	@DisplayName("Update contact phone request - testUpdateContactPhone()")
+	void testUpdateContactPhone() {
+		Contact contactToUpdate = new Contact(new ObjectId().toString(), "testFirstName", "testLastName",
+				"0000000000", "test@email.com");
+		String newPhone = "1111111111";
+		contactRepository.save(contactToUpdate);
+		contactController.updatePhone(contactToUpdate, newPhone);
+		verify(contactView).contactEdited(contactToUpdate);
+		verify(contactView).showMessage("Contact phone changed");
+		verifyNoMoreInteractions(contactView);
+	}
+	
+	@Test
+	@DisplayName("Update contact email request - testUpdateContactEmail()")
+	void testUpdateContactEmail() {
+		Contact contactToUpdate = new Contact(new ObjectId().toString(), "testFirstName", "testLastName",
+				"0000000000", "test@email.com");
+		String newEmail = "newtest@email.com";
+		contactRepository.save(contactToUpdate);
+		contactController.updateEmail(contactToUpdate, newEmail);
+		verify(contactView).contactEdited(contactToUpdate);
+		verify(contactView).showMessage("Contact email changed");
+		verifyNoMoreInteractions(contactView);
+	}
 }
