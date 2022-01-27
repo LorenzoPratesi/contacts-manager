@@ -63,14 +63,14 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Generate JUnit Report
+        if: ${{ matrix.java == 8 }}
         run: >
           mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
           surefire-report:report-only site:site -DgenerateReports=false
-        if: ${{ always() }}
 
       - name: Archive JUnit Report
         uses: actions/upload-artifact@v2
-        if: ${{ always() }}
+        if: ${{ matrix.java == 8 }}
         with:
           name: surefire-report-jdk-${{ matrix.java }}
           path: '**/target/site'
