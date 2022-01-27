@@ -7,7 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.unifi.lorenzopratesi.app.contacts.validation.InputValidation;
 
@@ -71,9 +73,16 @@ class ControllerInputValidatorTest {
 	class EmailValidation {
 		
 		@ParameterizedTest
-		@NullAndEmptySource
+		@NullSource
+		@DisplayName("Email validation should return false on null string - testValidateEmailShouldReturnFalseOnNullString()")
+		void testValidateEmailShouldReturnFalseOnNullString(String nullEmail) {
+			assertThat(validator.validateEmail(nullEmail)).isFalse();
+		}
+		
+		@ParameterizedTest
+		@EmptySource
 		@ValueSource(strings = { "  ", "\t", "\n" })
-		@DisplayName("Email validation should return false on null string and for all types of blank strings - testValidatePhoneShouldReturnFalseForAllTypesOfBlankStrings()")
+		@DisplayName("Email validation should return false for all types of blank strings - testValidatePhoneShouldReturnFalseForAllTypesOfBlankStrings()")
 		void testValidateEmailShouldReturnFalseForAllTypesOfBlankStrings(String emptyPhone) {
 			assertThat(validator.validatePhone(emptyPhone)).isFalse();
 		}
