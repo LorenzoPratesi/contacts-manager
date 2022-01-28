@@ -174,7 +174,7 @@ class ContactMongoRepositoryTest {
 
 	@ParameterizedTest
 	@MethodSource("provideValuesForFindByNameTest")
-	@DisplayName("Find by name testing with some matching examples, just for documentation - testFindByNameShouldReturnAListOfContactMatches()")
+	@DisplayName("Find by name testing with some matching examples, just for documentation purpose - testFindByNameShouldReturnAListOfContactMatches()")
 	void testFindByNameShouldReturnAListOfContactMatches(List<Contact> contacts, String input, List<Contact> expected) {
 		contactCollection.insertMany(contacts);
 		assertThat(contactMongoRepository.findByName(input)).isEqualTo(expected);
