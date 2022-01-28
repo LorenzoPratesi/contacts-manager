@@ -1,7 +1,11 @@
 name: Java CI with Maven and Docker in Windows
 
 on:
-  pull_request:
+   push:
+      branches:
+      - main
+      - multiple-workflows
+   pull_request: null
 
 jobs:
   build:
