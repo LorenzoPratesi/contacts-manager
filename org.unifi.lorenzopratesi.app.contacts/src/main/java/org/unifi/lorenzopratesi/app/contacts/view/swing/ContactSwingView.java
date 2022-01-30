@@ -378,6 +378,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 		txtLastName.setText("");
 		txtEmail.setText("");
 		txtPhone.setText("");
+		btnAddContact.setEnabled(false);
 		clearErrorLog();
 	}
 
@@ -391,6 +392,7 @@ public class ContactSwingView extends JFrame implements ContactView {
 		if (contactIdx.isPresent()) {
 			listContactsModel.set(contactIdx.getAsInt(), contact);
 			textFieldNewAttribute.setText("");
+			btnEditAttribute.setEnabled(false);
 			clearErrorLog();
 		} else {
 			throw new IndexOutOfBoundsException(String.format("Internal error: %s not found.", contact));

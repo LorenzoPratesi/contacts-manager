@@ -23,13 +23,13 @@
 		<mongodb.bson.version>4.3.1</mongodb.bson.version>
 		<logback.classic.version>1.2.3</logback.classic.version>
 		<findbugs.version>3.0.2</findbugs.version>
-		<pitest.version>1.5.2</pitest.version>
+		<pitest.version>1.7.3</pitest.version>
+		<pitest.junit5.version>0.15</pitest.junit5.version>
 		<jacoco.maven.plugin.version>0.8.6</jacoco.maven.plugin.version>
 		<coveralls.maven.plugin.version>4.3.0</coveralls.maven.plugin.version>
 		<io.fabric8.docker.maven.plugin.version>0.38.1</io.fabric8.docker.maven.plugin.version>
 		<mongo.driver.version>3.12.10</mongo.driver.version>
 		<mongo.java.server.version>1.37.0</mongo.java.server.version>
-		<slf4f.version>1.7.21</slf4f.version>
 		<testcontainers.version>1.15.1</testcontainers.version>
 		<picocli.version>4.6.1</picocli.version>
 		<maven.surfire.plugin.version>2.22.2</maven.surfire.plugin.version>
@@ -152,18 +152,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4f.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4f.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>testcontainers</artifactId>
 			<version>${testcontainers.version}</version>
@@ -277,7 +265,7 @@
 					<dependency>
 						<groupId>org.pitest</groupId>
 						<artifactId>pitest-junit5-plugin</artifactId>
-						<version>0.12</version>
+						<version>${pitest.junit5.version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>

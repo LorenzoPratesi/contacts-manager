@@ -247,7 +247,7 @@ class ContactSwingViewTest {
 		}
 
 		@Test
-		@DisplayName("Contact Added should added contact to the list then clear the error log and Contact form - testContactAddedShouldAddedContactToTheListThenClearErrorLogAndContactForm()")
+		@DisplayName("Contact Added should added contact to the list then clear the error log and Contact form, and finally disable the add btn - testContactAddedShouldAddedContactToTheListThenClearErrorLogAndContactForm()")
 		void testContactAddedShouldAddedContactToTheListThenClearErrorLogAndContactForm() {
 			// Setup.
 			Contact contactToAdd = new Contact("1", "testFirstName", "testLastName", "0000000000", "test@email.com");
@@ -263,6 +263,7 @@ class ContactSwingViewTest {
 			window.textBox("lastNameTextBox").requireEmpty();
 			window.textBox("phoneTextBox").requireEmpty();
 			window.textBox("emailTextBox").requireEmpty();
+			window.button("addContactButton").requireDisabled();
 		}
 
 		@Test
@@ -312,6 +313,7 @@ class ContactSwingViewTest {
 			assertThat(contactsListContent).containsExactly(contactEdited.toString());
 			window.label("messageLabel").requireText(" ");
 			window.textBox("newAttributeTextBox").requireText("");
+			window.button("editContactButton").requireDisabled();
 		}
 
 		@Test
