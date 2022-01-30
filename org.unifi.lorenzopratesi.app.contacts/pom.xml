@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>Contacts Manager</name>
-	<url>http://maven.apache.org</url>
+	<description>Advanced Tool and Techniques for Software Development exam project at UNIFI</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -78,7 +78,6 @@
 			${project.build.directory}/failsafe-reports
 		</sonar.junit.reportPaths>
 	</properties>
-
 
 	<dependencies>
 		<dependency>

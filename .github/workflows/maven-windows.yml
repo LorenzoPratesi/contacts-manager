@@ -5,7 +5,7 @@ on:
       branches:
       - main
       - multiple-workflows
-   pull_request: null
+   pull_request:
 
 jobs:
   build:
