@@ -275,7 +275,7 @@
 						<param>org.unifi.lorenzopratesi.app.contacts.validation.*</param>
 					</targetClasses>
 					<targetTests>
-						<param>org.unifi.lorenzopratesi.app.contacts.controller*</param>
+						<param>org.unifi.lorenzopratesi.app.contacts.controller.*</param>
 						<param>org.unifi.lorenzopratesi.app.contacts.repository.*</param>
 						<param>org.unifi.lorenzopratesi.app.contacts.validation.*</param>
 					</targetTests>
@@ -433,6 +433,4 @@
 			</build>
 		</profile>
 	</profiles>
-	
-	
 </project>
