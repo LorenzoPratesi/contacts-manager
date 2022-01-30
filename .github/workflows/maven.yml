@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      workdir: org.unifi.lorenzopratesi.app.contacts
     strategy:
       # test against several Java versions:
       matrix:
@@ -67,6 +69,7 @@ jobs:
         run: >
           mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
           surefire-report:report-only site:site -DgenerateReports=false
+        working-directory: ${{ env.workdir }}
 
       - name: Archive JUnit Report
         uses: actions/upload-artifact@v2
