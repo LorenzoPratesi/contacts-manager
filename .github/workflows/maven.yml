@@ -67,8 +67,7 @@ jobs:
       - name: Generate JUnit Report
         if: ${{ matrix.java == 8 }}
         run: >
-          mvn -f org.unifi.lorenzopratesi.app.contacts/pom.xml
-          surefire-report:report-only site:site -DgenerateReports=false
+          mvn surefire-report:report-only site:site -DgenerateReports=false
         working-directory: ${{ env.workdir }}
 
       - name: Archive JUnit Report
