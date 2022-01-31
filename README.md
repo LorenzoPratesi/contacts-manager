@@ -23,19 +23,55 @@ This project resembles a skeleton of a contact managing application that can sto
 
 ## How to Build the Project
 1. Clone the Repository.
-```sh
+```bash
 git clone https://github.com/LorenzoPratesi/contacts-manager
 ```
 2. Set Project Main Directory.
-```sh
+```bash
 cd contacts-manager/org.unifi.lorenzopratesi.app.contacts
 ```
 
 3. Build the Project - Compile code, Unit, Integration and End To End tests
-```sh
+```bash
 mvn clean verify
 ```
 or With Also JaCoCo and Pit Report
-```sh
+```bash
 mvn clean verify -Pjacoco,mutation-testing
 ```
+
+## Run the application
+### Jar file creation
+If you want to build by yourself the application, you have to do the following steps:
+1. Clone the Repository.
+```bash
+git clone https://github.com/LorenzoPratesi/contacts-manager
+```
+2. Set Project Main Directory.
+```bash
+cd contacts-manager/org.unifi.lorenzopratesi.app.contacts
+```
+
+3. Run a maven build, with clean and package goals
+```bash
+mvn clean package
+```
+
+### Usage
+Before launching the application, you have to launch a MongoDB instance. You can launch the docker container using
+```bash
+docker run -p 27017:27017 --rm mongo:4.4.3
+```
+Set Project Main Directory.
+```bash
+cd contacts-manager/org.unifi.lorenzopratesi.app.contacts
+```
+
+The application can be launched executing the jar file
+```bash
+java -jar target/contacts-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+```
+
+   
+
+

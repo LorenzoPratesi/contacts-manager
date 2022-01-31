@@ -34,6 +34,7 @@
 		<picocli.version>4.6.1</picocli.version>
 		<maven.surfire.plugin.version>2.22.2</maven.surfire.plugin.version>
 		<failsafe.version>2.22.2</failsafe.version>
+		<maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
 
 		<sonar.organization>lorenzopratesi</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -195,9 +196,14 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${maven.surfire.plugin.version}</version>
 				</plugin>
-			</plugins>
 
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${maven.assembly.plugin.version}</version>
+				</plugin>
+			</plugins>
 		</pluginManagement>
+		
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -362,6 +368,30 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<archive>
+								<manifest>
+									<mainClass>org.unifi.lorenzopratesi.app.contacts.app.swing.ContactSwingApp</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 
 	</build>
