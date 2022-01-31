@@ -67,7 +67,7 @@ Set Project Main Directory.
 cd contacts-manager/org.unifi.lorenzopratesi.app.contacts
 ```
 
-The application can be launched executing the jar file
+After generating the jar by executing the maven phase package (i.e `mvn clean package`), the application can be launched executing the jar file
 ```bash
 java -jar target/contacts-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 ```
